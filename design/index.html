@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker Design</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+            background: linear-gradient(135deg, #0F1419 0%, #1A1F2E 100%);
+            color: #FFFFFF;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(15, 20, 25, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(139, 147, 168, 0.1);
+            padding: 0 32px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-brand span {
+            color: #00D9FF;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgba(35, 43, 60, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-icon:hover {
+            background: rgba(0, 217, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Layout Grid */
+        .layout {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 32px;
+            margin-top: 24px;
+        }
+
+        /* Section */
+        .section {
+            background: rgba(35, 43, 60, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 147, 168, 0.1);
+            border-radius: 20px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            border-color: rgba(0, 217, 255, 0.2);
+            background: rgba(35, 43, 60, 0.6);
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Period Selector */
+        .period-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            background: rgba(26, 31, 46, 0.5);
+            padding: 8px;
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .period-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            color: #8B93A8;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .period-btn.active {
+            background: #00D9FF;
+            color: #0F1419;
+            font-weight: 600;
+        }
+
+        .period-btn:hover:not(.active) {
+            color: #FFFFFF;
+        }
+
+        /* Chart Card */
+        .chart-card {
+            background: rgba(26, 31, 46, 0.6);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(139, 147, 168, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 320px;
+        }
+
+        .chart-value {
+            position: absolute;
+            top: 20px;
+            right: 0;
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid #00D9FF;
+            color: #00D9FF;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Transactions Section */
+        .transactions-section {
+            margin-top: 32px;
+        }
+
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .transaction-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .transaction-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .transaction-list::-webkit-scrollbar-thumb {
+            background: rgba(139, 147, 168, 0.3);
+            border-radius: 3px;
+        }
+
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(26, 31, 46, 0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(139, 147, 168, 0.06);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .transaction-item:hover {
+            background: rgba(26, 31, 46, 0.6);
+            border-color: rgba(0, 217, 255, 0.2);
+            transform: translateX(4px);
+        }
+
+        .transaction-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: rgba(0, 217, 255, 0.15);
+            flex-shrink: 0;
+        }
+
+        .transaction-details {
+            flex: 1;
+        }
+
+        .transaction-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+
+        .transaction-category {
+            font-size: 12px;
+            color: #8B93A8;
+        }
+
+        .transaction-date {
+            font-size: 12px;
+            color: #8B93A8;
+        }
+
+        .transaction-amount {
+            font-size: 14px;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .transaction-amount.income {
+            color: #10B981;
+        }
+
+        .transaction-amount.expense {
+            color: #F87171;
+        }
+
+        /* Right Column */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* Summary Card */
+        .summary-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .summary-item {
+            background: rgba(26, 31, 46, 0.6);
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(139, 147, 168, 0.08);
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: #8B93A8;
+            font-weight: 500;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-value {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .summary-value.income {
+            color: #10B981;
+        }
+
+        .summary-value.expense {
+            color: #F87171;
+        }
+
+        .summary-value.balance {
+            color: #00D9FF;
+        }
+
+        /* Categories */
+        .categories-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .category-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px;
+            background: rgba(26, 31, 46, 0.6);
+            border-radius: 14px;
+            border: 1px solid rgba(139, 147, 168, 0.08);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            background: rgba(26, 31, 46, 0.8);
+            border-color: rgba(0, 217, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .category-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .category-icon.income {
+            background: rgba(16, 185, 129, 0.15);
+        }
+
+        .category-icon.utilities {
+            background: rgba(59, 130, 246, 0.15);
+        }
+
+        .category-icon.spending {
+            background: rgba(0, 217, 255, 0.15);
+        }
+
+        .category-icon.food {
+            background: rgba(249, 115, 22, 0.15);
+        }
+
+        .category-icon.transport {
+            background: rgba(168, 85, 247, 0.15);
+        }
+
+        .category-icon.entertainment {
+            background: rgba(236, 72, 153, 0.15);
+        }
+
+        .category-info {
+            flex: 1;
+        }
+
+        .category-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 6px;
+        }
+
+        .category-progress {
+            width: 100%;
+            height: 6px;
+            background: rgba(139, 147, 168, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .category-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00D9FF, #0099CC);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .category-amount {
+            font-size: 14px;
+            font-weight: 700;
+            color: #FFFFFF;
+            text-align: right;
+            min-width: 80px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00D9FF, #0099CC);
+            color: #0F1419;
+            grid-column: 1 / -1;
+            padding: 16px 24px;
+            font-size: 15px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(139, 147, 168, 0.1);
+            color: #FFFFFF;
+            border: 1px solid rgba(139, 147, 168, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(139, 147, 168, 0.15);
+            border-color: rgba(139, 147, 168, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 24px 16px;
+            }
+
+            .section {
+                padding: 24px;
+            }
+
+            .summary-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .navbar {
+                padding: 0 16px;
+            }
+
+            .nav-brand {
+                font-size: 20px;
+            }
+
+            .container {
+                padding: 16px 12px;
+            }
+
+            .section {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .chart-container {
+                height: 280px;
+            }
+
+            .summary-value {
+                font-size: 24px;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-brand">Expense<span>Hub</span></div>
+        <div class="nav-actions">
+            <div class="nav-icon">🔔</div>
+            <div class="nav-icon">⚙️</div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Page Title -->
+        <div style="margin-bottom: 8px;">
+            <h1 style="font-size: 32px; font-weight: 700;">Your Spending</h1>
+            <p style="color: #8B93A8; margin-top: 8px; font-size: 15px;">Track and manage your expenses efficiently</p>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="layout">
+            <!-- Left Column -->
+            <div>
+                <!-- Spending Overview Section -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>Spending Overview</span>
+                        <div class="period-selector">
+                            <button class="period-btn">Daily</button>
+                            <button class="period-btn active">Monthly</button>
+                            <button class="period-btn">Yearly</button>
+                        </div>
+                    </div>
+
+                    <!-- Chart Card -->
+                    <div class="chart-card">
+                        <div class="chart-value">2,900€</div>
+                        <div class="chart-container">
+                            <canvas id="spendingChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions Section -->
+                <div class="section transactions-section">
+                    <div class="section-title">Recent Transactions</div>
+                    <div class="transaction-list">
+                        <div class="transaction-item">
+                            <div class="transaction-icon" style="background: rgba(249, 115, 22, 0.15);">🍔</div>
+                            <div class="transaction-details">
+                                <div class="transaction-name">Restaurant Lunch</div>
+                                <div class="transaction-category">Food & Dining</div>
+                            </div>
+                            <div class="transaction-date">Today</div>
+                            <div class="transaction-amount expense">-45€</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon" style="background: rgba(168, 85, 247, 0.15);">🎬</div>
+                            <div class="transaction-details">
+                                <div class="transaction-name">Netflix Subscription</div>
+                                <div class="transaction-category">Entertainment</div>
+                            </div>
+                            <div class="transaction-date">Yesterday</div>
+                            <div class="transaction-amount expense">-12.99€</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon" style="background: rgba(59, 130, 246, 0.15);">💡</div>
+                            <div class="transaction-details">
+                                <div class="transaction-name">Electricity Bill</div>
+                                <div class="transaction-category">Utilities</div>
+                            </div>
+                            <div class="transaction-date">3 days ago</div>
+                            <div class="transaction-amount expense">-85€</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon" style="background: rgba(168, 85, 247, 0.15);">🚕</div>
+                            <div class="transaction-details">
+                                <div class="transaction-name">Uber Trip</div>
+                                <div class="transaction-category">Transportation</div>
+                            </div>
+                            <div class="transaction-date">4 days ago</div>
+                            <div class="transaction-amount expense">-22.50€</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon" style="background: rgba(16, 185, 129, 0.15);">💰</div>
+                            <div class="transaction-details">
+                                <div class="transaction-name">Salary Deposit</div>
+                                <div class="transaction-category">Income</div>
+                            </div>
+                            <div class="transaction-date">5 days ago</div>
+                            <div class="transaction-amount income">+4,300€</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Summary Cards -->
+                <div class="section">
+                    <div class="section-title">This Month</div>
+                    <div class="summary-card">
+                        <div class="summary-item">
+                            <div class="summary-label">Total Income</div>
+                            <div class="summary-value income">4,300€</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Total Expenses</div>
+                            <div class="summary-value expense">2,900€</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <div class="summary-item">
+                            <div class="summary-label">Net Balance</div>
+                            <div class="summary-value balance">1,400€</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="section">
+                    <div class="section-title">Categories</div>
+                    <div class="categories-list">
+                        <div class="category-card">
+                            <div class="category-left">
+                                <div class="category-icon income">💰</div>
+                                <div class="category-info">
+                                    <div class="category-name">Income</div>
+                                    <div class="category-progress">
+                                        <div class="category-progress-bar" style="width: 100%; background: #10B981;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="category-amount">4,300€</div>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-left">
+                                <div class="category-icon utilities">💡</div>
+                                <div class="category-info">
+                                    <div class="category-name">Utilities</div>
+                                    <div class="category-progress">
+                                        <div class="category-progress-bar" style="width: 65%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="category-amount">780€</div>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-left">
+                                <div class="category-icon spending">🛍️</div>
+                                <div class="category-info">
+                                    <div class="category-name">Shopping</div>
+                                    <div class="category-progress">
+                                        <div class="category-progress-bar" style="width: 45%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="category-amount">450€</div>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-left">
+                                <div class="category-icon food">🍔</div>
+                                <div class="category-info">
+                                    <div class="category-name">Food & Dining</div>
+                                    <div class="category-progress">
+                                        <div class="category-progress-bar" style="width: 72%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="category-amount">380€</div>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-left">
+                                <div class="category-icon transport">🚕</div>
+                                <div class="category-info">
+                                    <div class="category-name">Transportation</div>
+                                    <div class="category-progress">
+                                        <div class="category-progress-bar" style="width: 35%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="category-amount">290€</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons" style="margin: 0;">
+                    <button class="btn btn-primary">+ Add Transaction</button>
+                    <button class="btn btn-secondary" style="grid-column: 1;">View Budgets</button>
+                    <button class="btn btn-secondary">Export Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Spending Chart
+        const ctx = document.getElementById('spendingChart').getContext('2d');
+        const spendingChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Monthly Spending',
+                    data: [2100, 1900, 2900, 2400, 2200, 2600, 2500],
+                    backgroundColor: [
+                        'rgba(139, 147, 168, 0.4)',
+                        'rgba(139, 147, 168, 0.4)',
+                        'rgba(0, 217, 255, 0.8)',
+                        'rgba(139, 147, 168, 0.4)',
+                        'rgba(139, 147, 168, 0.4)',
+                        'rgba(139, 147, 168, 0.4)',
+                        'rgba(139, 147, 168, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgba(139, 147, 168, 0.6)',
+                        'rgba(139, 147, 168, 0.6)',
+                        'rgba(0, 217, 255, 1)',
+                        'rgba(139, 147, 168, 0.6)',
+                        'rgba(139, 147, 168, 0.6)',
+                        'rgba(139, 147, 168, 0.6)',
+                        'rgba(139, 147, 168, 0.6)'
+                    ],
+                    borderWidth: 1.5,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                    barThickness: 24
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(26, 31, 46, 0.9)',
+                        titleColor: '#00D9FF',
+                        bodyColor: '#FFFFFF',
+                        borderColor: 'rgba(0, 217, 255, 0.3)',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + '€';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 3500,
+                        ticks: {
+                            color: 'rgba(139, 147, 168, 0.6)',
+                            font: {
+                                size: 12
+                            },
+                            stepSize: 500,
+                            callback: function(value) {
+                                return value + '€';
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(139, 147, 168, 0.1)',
+                            drawBorder: false
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'rgba(139, 147, 168, 0.8)',
+                            font: {
+                                size: 13,
+                                weight: 500
+                            }
+                        },
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Add button interactions
+        document.querySelectorAll('.period-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('This would open the Add Transaction modal in the actual application');
+            });
+        });
+    </script>
+</body>
+</html>
