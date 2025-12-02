@@ -1,0 +1,15 @@
+{
+  "short_name": "ExpenseHub",
+  "name": "ExpenseHub - Expense Tracker",
+  "icons": [
+    {
+      "src": "expensy-logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0F1419",
+  "background_color": "#0F1419"
+}
