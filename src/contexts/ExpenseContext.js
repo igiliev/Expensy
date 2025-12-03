@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 const ExpenseContext = createContext();
 
@@ -10,76 +11,58 @@ export const useExpense = () => {
   return context;
 };
 
+// Default categories structure
+const defaultCategories = [
+  { id: 'bills', name: 'Bills', icon: '📄', amount: 0, progress: 0 },
+  { id: 'baby', name: 'Baby', icon: '👶', amount: 0, progress: 0 },
+  { id: 'house', name: 'House', icon: '🏠', amount: 0, progress: 0 },
+  { id: 'entertainment', name: 'Entertainment', icon: '🎬', amount: 0, progress: 0 },
+  { id: 'food', name: 'Food', icon: '🍔', amount: 0, progress: 0 },
+  { id: 'transport', name: 'Transport', icon: '🚗', amount: 0, progress: 0 }
+];
+
 export const ExpenseProvider = ({ children }) => {
-  // Initial data structure
-  const initialData = {
+  const { apiRequest, isAuthenticated } = useAuth();
+  const [expenseData, setExpenseData] = useState({
+    categories: defaultCategories,
+    transactions: []
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-    // Categories with their amounts
-    categories: [
-      { id: 'bills', name: 'Bills', icon: '📄', amount: 850, progress: 68 },
-      { id: 'baby', name: 'Baby', icon: '👶', amount: 320, progress: 45 },
-      { id: 'house', name: 'House', icon: '🏠', amount: 650, progress: 55 },
-      { id: 'entertainment', name: 'Entertainment', icon: '🎬', amount: 180, progress: 30 },
-      { id: 'food', name: 'Food', icon: '🍔', amount: 420, progress: 75 },
-      { id: 'transport', name: 'Transport', icon: '🚗', amount: 290, progress: 40 }
-    ],
+  // Fetch expenses from API
+  const fetchExpenses = async () => {
+    if (!isAuthenticated) return;
 
-    // Recent transactions
-    transactions: [
-      {
-        id: 1,
-        icon: '🍔',
-        iconBg: 'rgba(249, 115, 22, 0.15)',
-        name: 'Restaurant Lunch',
-        category: 'Food & Dining',
-        date: 'Today',
-        amount: -45,
-        type: 'expense'
-      },
-      {
-        id: 2,
-        icon: '🎬',
-        iconBg: 'rgba(168, 85, 247, 0.15)',
-        name: 'Netflix Subscription',
-        category: 'Entertainment',
-        date: 'Yesterday',
-        amount: -12.99,
-        type: 'expense'
-      },
-      {
-        id: 3,
-        icon: '💡',
-        iconBg: 'rgba(59, 130, 246, 0.15)',
-        name: 'Electricity Bill',
-        category: 'Utilities',
-        date: '3 days ago',
-        amount: -85,
-        type: 'expense'
-      },
-      {
-        id: 4,
-        icon: '🚗',
-        iconBg: 'rgba(168, 85, 247, 0.15)',
-        name: 'Uber Trip',
-        category: 'Transportation',
-        date: '4 days ago',
-        amount: -22.50,
-        type: 'expense'
-      },
-      {
-        id: 5,
-        icon: '💰',
-        iconBg: 'rgba(16, 185, 129, 0.15)',
-        name: 'Salary Deposit',
-        category: 'Income',
-        date: '5 days ago',
-        amount: 4300,
-        type: 'income'
-      }
-    ]
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await apiRequest('/api/expenses');
+      setExpenseData(prev => ({
+        ...prev,
+        transactions: response.data || []
+      }));
+    } catch (error) {
+      console.error('Failed to fetch expenses:', error);
+      setError('Failed to load expenses');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const [expenseData, setExpenseData] = useState(initialData);
+  // Load expenses when user becomes authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchExpenses();
+    } else {
+      // Reset data when user logs out
+      setExpenseData({
+        categories: defaultCategories,
+        transactions: []
+      });
+    }
+  }, [isAuthenticated]);
 
   // Calculate monthly spending from transactions
   const calculateMonthlySpending = () => {
@@ -104,7 +87,7 @@ export const ExpenseProvider = ({ children }) => {
     const categoryTotals = {};
 
     // Initialize all categories with 0
-    initialData.categories.forEach(cat => {
+    defaultCategories.forEach(cat => {
       categoryTotals[cat.id] = 0;
     });
 
@@ -120,19 +103,19 @@ export const ExpenseProvider = ({ children }) => {
           'Entertainment': 'entertainment',
           'Food': 'food',
           'Transport': 'transport',
-          'Utilities': 'bills', // Map old categories
+          'Utilities': 'bills',
           'Food & Dining': 'food',
           'Transportation': 'transport'
         };
 
-        const categoryId = categoryMapping[transaction.category] || 'bills'; // Default to bills
+        const categoryId = categoryMapping[transaction.category] || 'bills';
         if (categoryTotals[categoryId] !== undefined) {
           categoryTotals[categoryId] += Math.abs(transaction.amount);
         }
       });
 
-    // Calculate progress (assuming a monthly budget of 1000 per category for demo)
-    return initialData.categories.map(cat => ({
+    // Calculate progress (assuming a monthly budget of 1000 per category)
+    return defaultCategories.map(cat => ({
       ...cat,
       amount: categoryTotals[cat.id] || 0,
       progress: Math.min((categoryTotals[cat.id] || 0) / 1000 * 100, 100)
@@ -154,20 +137,48 @@ export const ExpenseProvider = ({ children }) => {
     return { totalIncome, totalExpenses, netBalance };
   };
 
-  // Reset all data to zero
-  const resetAllData = () => {
-    setExpenseData({
-      categories: initialData.categories.map(cat => ({ ...cat, amount: 0, progress: 0 })),
-      transactions: []
-    });
+  // Add a new transaction (now saves to API)
+  const addTransaction = async (transactionData) => {
+    try {
+      setError(null);
+
+      // Convert frontend transaction format to API format
+      const apiData = {
+        type: transactionData.type,
+        amount: Math.abs(transactionData.amount), // API expects positive amount
+        category: transactionData.category,
+        description: transactionData.name || transactionData.description,
+        date: transactionData.date === 'Today' || transactionData.date === 'Yesterday'
+          ? new Date().toISOString()
+          : new Date(transactionData.date).toISOString()
+      };
+
+      // Save to API
+      const response = await apiRequest('/api/expenses', {
+        method: 'POST',
+        body: JSON.stringify(apiData)
+      });
+
+      // Add the returned transaction to local state
+      setExpenseData(prev => ({
+        ...prev,
+        transactions: [response.data, ...prev.transactions]
+      }));
+
+      return { success: true };
+    } catch (error) {
+      console.error('Failed to add transaction:', error);
+      setError('Failed to add transaction');
+      return { success: false, error: error.message };
+    }
   };
 
-  // Add a new transaction
-  const addTransaction = (transaction) => {
-    setExpenseData(prev => ({
-      ...prev,
-      transactions: [transaction, ...prev.transactions]
-    }));
+  // Reset all data (for demo purposes - in real app might want to clear from API too)
+  const resetAllData = () => {
+    setExpenseData({
+      categories: defaultCategories.map(cat => ({ ...cat, amount: 0, progress: 0 })),
+      transactions: []
+    });
   };
 
   const value = {
@@ -177,8 +188,11 @@ export const ExpenseProvider = ({ children }) => {
       categories: calculateCategories()
     },
     summary: calculateSummary(),
+    loading,
+    error,
     resetAllData,
-    addTransaction
+    addTransaction,
+    fetchExpenses
   };
 
   return (

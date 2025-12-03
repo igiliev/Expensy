@@ -41,7 +41,7 @@ function AddTransactionModal() {
     setSelectedCategory('bills');
   };
 
-  const submitTransaction = () => {
+  const submitTransaction = async () => {
     const amountInput = document.querySelector('.amount-input');
     const descriptionInput = document.querySelector('input[type="text"]');
     const dateInput = document.querySelector('input[type="date"]');
@@ -75,11 +75,15 @@ function AddTransactionModal() {
       type: transactionType
     };
 
-    // Add transaction to context
-    addTransaction(transaction);
+    // Add transaction to context (now saves to API)
+    const result = await addTransaction(transaction);
 
-    alert('Transaction added successfully!');
-    closeModal();
+    if (result.success) {
+      alert('Transaction added successfully!');
+      closeModal();
+    } else {
+      alert('Failed to add transaction. Please try again.');
+    }
   };
 
   // Close modal when clicking outside
