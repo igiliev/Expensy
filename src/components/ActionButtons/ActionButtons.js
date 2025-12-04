@@ -7,7 +7,6 @@ function ActionButtons() {
   const handleReset = () => {
     if (window.confirm('Are you sure you want to reset all expenses and income for the current month? This action cannot be undone.')) {
       resetAllData();
-      alert('All expenses and income for the current month have been reset.');
     }
   };
 

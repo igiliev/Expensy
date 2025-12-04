@@ -51,7 +51,7 @@ function AddTransactionModal() {
     const date = dateInput?.value || new Date().toISOString().split('T')[0];
 
     if (!amount || amount <= 0) {
-      alert('Please enter a valid amount');
+      // Could add visual feedback here instead of alert
       return;
     }
 
@@ -79,10 +79,10 @@ function AddTransactionModal() {
     const result = await addTransaction(transaction);
 
     if (result.success) {
-      alert('Transaction added successfully!');
       closeModal();
     } else {
-      alert('Failed to add transaction. Please try again.');
+      // Could show error state in the modal instead of alert
+      console.error('Failed to add transaction:', result.error);
     }
   };
 
