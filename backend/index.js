@@ -9,7 +9,7 @@ const connectDB = require('./config/database');
 // Load environment variables
 dotenv.config();
 
-// Connect to MongoDB
+// Connect to MongoDB (Atlas)
 connectDB();
 
 const app = express();
@@ -27,15 +27,35 @@ if (!MONGO_URI) {
 console.log("🧪 NODE_ENV =", process.env.NODE_ENV);
 console.log("🧪 Running backend using MONGO_URI =", !!process.env.MONGO_URI);
 
-
 // Security middleware
 app.use(helmet());
 
-// CORS configuration
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
-}));
+// ----- CORS configuration -----
+const allowedOrigins = [
+  process.env.FRONTEND_URL,   // e.g. https://expensy-delta.vercel.app on Render
+  'http://localhost:3000',    // local React dev
+].filter(Boolean);
+
+console.log('🌍 Allowed CORS origins:', allowedOrigins);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (Postman, curl, etc.)
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      console.log('❌ CORS blocked origin:', origin);
+      return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+  })
+);
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
@@ -57,7 +77,7 @@ app.get('/api/health', (req, res) => {
     success: true,
     message: 'Expensy AI API is running',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
   });
 });
 
@@ -65,7 +85,7 @@ app.get('/api/health', (req, res) => {
 app.use('*', (req, res) => {
   res.status(404).json({
     success: false,
-    message: `Route ${req.originalUrl} not found`
+    message: `Route ${req.originalUrl} not found`,
   });
 });
 
@@ -79,7 +99,7 @@ app.use((error, req, res, next) => {
     return res.status(400).json({
       success: false,
       message: 'Validation Error',
-      errors
+      errors,
     });
   }
 
@@ -88,7 +108,7 @@ app.use((error, req, res, next) => {
     const field = Object.keys(error.keyValue)[0];
     return res.status(400).json({
       success: false,
-      message: `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`
+      message: `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`,
     });
   }
 
@@ -96,21 +116,21 @@ app.use((error, req, res, next) => {
   if (error.name === 'JsonWebTokenError') {
     return res.status(401).json({
       success: false,
-      message: 'Invalid token'
+      message: 'Invalid token',
     });
   }
 
   if (error.name === 'TokenExpiredError') {
     return res.status(401).json({
       success: false,
-      message: 'Token expired'
+      message: 'Token expired',
     });
   }
 
   // Default error response
   res.status(error.status || 500).json({
     success: false,
-    message: error.message || 'Internal server error'
+    message: error.message || 'Internal server error',
   });
 });
 
@@ -135,5 +155,3 @@ process.on('unhandledRejection', (err, promise) => {
 });
 
 module.exports = app;
-
-
