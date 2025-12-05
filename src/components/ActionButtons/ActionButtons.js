@@ -11,15 +11,13 @@ function ActionButtons() {
   };
 
   return (
-    <div className="section">
-      <div className="action-buttons">
-        <button className="btn btn-primary" onClick={() => document.querySelector('button.fixed').click()}>
-          + Add Transaction
-        </button>
-        <button className="btn btn-secondary btn-full-width" onClick={handleReset}>
-          Reset Month
-        </button>
-      </div>
+    <div className="action-buttons" style={{ margin: 0 }}>
+      <button className="btn btn-primary" onClick={() => document.querySelector('button.fixed').click()}>
+        + Add Transaction
+      </button>
+      <button className="btn btn-secondary btn-full-width" onClick={handleReset}>
+        Reset Month
+      </button>
     </div>
   );
 }

@@ -13,7 +13,7 @@ function Home() {
       <Header />
       <div className="container">
         {/* Page Title */}
-        <div style={{marginBottom: '8px'}}>
+        <div style={{marginBottom: '40px'}}>
           <h1 style={{fontSize: '32px', fontWeight: '700'}}>Your Spending</h1>
           <p style={{color: '#8B93A8', marginTop: '8px', fontSize: '15px'}}>Track and manage your expenses efficiently</p>
         </div>
@@ -28,11 +28,13 @@ function Home() {
 
           {/* Right Column */}
           <div className="right-column">
-            <SummaryCards />
+            <ActionButtons />
+            <div style={{marginTop: '24px'}}>
+              <SummaryCards />
+            </div>
             <div style={{marginTop: '24px'}}>
               <Categories />
             </div>
-            <ActionButtons />
           </div>
         </div>
       </div>
