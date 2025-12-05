@@ -24,6 +24,10 @@ if (!MONGO_URI) {
   process.exit(1);
 }
 
+console.log("🧪 NODE_ENV =", process.env.NODE_ENV);
+console.log("🧪 Running backend using MONGO_URI =", !!process.env.MONGO_URI);
+
+
 // Security middleware
 app.use(helmet());
 
