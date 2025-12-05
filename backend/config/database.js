@@ -1,22 +1,22 @@
-const mongoose = require('mongoose');
+// backend/config/database.js
+const mongoose = require("mongoose");
 
 const connectDB = async () => {
+  const uri = process.env.MONGO_URI;
+
+  if (!uri) {
+    console.error("❌ MONGO_URI is not defined in environment variables");
+    process.exit(1);
+  }
+
   try {
-    const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/expensy';
-
-    const conn = await mongoose.connect(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    await mongoose.connect(uri);
+    console.log("✅ MongoDB connected (Atlas)");
   } catch (error) {
-    console.error('MongoDB connection error:', error.message);
-    console.error('Make sure MongoDB is running on your system.');
-    console.error('For Windows: Start MongoDB service or run mongod.exe');
+    console.error("❌ MongoDB connection error:", error.message);
+    // In Render it's better to crash so the service restarts
     process.exit(1);
   }
 };
 
 module.exports = connectDB;
-
