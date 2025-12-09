@@ -8,9 +8,9 @@ import './App.css';
 
 // Component to handle authentication routing
 function AppContent() {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, initializing } = useAuth();
 
-  if (loading) {
+  if (initializing) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-50 to-blue-50">
         <div className="text-center">

@@ -7,8 +7,7 @@ function Login({ onSwitchToRegister }) {
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { login, error } = useAuth();
+  const { login, authLoading, error } = useAuth();
 
   const handleChange = (e) => {
     setFormData({
@@ -19,7 +18,6 @@ function Login({ onSwitchToRegister }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
       const result = await login(formData.email, formData.password);
@@ -28,8 +26,6 @@ function Login({ onSwitchToRegister }) {
       }
     } catch (error) {
       console.error('Login error:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -90,8 +86,8 @@ function Login({ onSwitchToRegister }) {
       </div>
 
       {/* Sign In Button */}
-      <button type="submit" className="btn-auth btn-primary-auth" disabled={loading}>
-        {loading ? (
+      <button type="submit" className="btn-auth btn-primary-auth" disabled={authLoading}>
+        {authLoading ? (
           <>
             <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>

@@ -17,8 +17,6 @@ function Header() {
         <img src={logo} alt="Expensy AI" className="nav-logo" />
       </div>
       <div className="nav-actions">
-        <div className="nav-icon">🔔</div>
-        <div className="nav-icon">⚙️</div>
         {user && (
           <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-200 hidden sm:block">

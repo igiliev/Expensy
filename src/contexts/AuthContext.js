@@ -15,7 +15,8 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
-  const [loading, setLoading] = useState(true);
+  const [initializing, setInitializing] = useState(true);
+  const [authLoading, setAuthLoading] = useState(false);
   const [error, setError] = useState(null);
 
   // Check if user is logged in on app start
@@ -34,7 +35,7 @@ export const AuthProvider = ({ children }) => {
           setToken(null);
         }
       }
-      setLoading(false);
+      setInitializing(false);
     };
 
     initAuth();
@@ -43,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setError(null);
-      setLoading(true);
+      setAuthLoading(true);
 
       console.log('Attempting login with:', { email, password: '***' });
 
@@ -76,14 +77,14 @@ export const AuthProvider = ({ children }) => {
       setError(error.message);
       return { success: false, error: error.message };
     } finally {
-      setLoading(false);
+      setAuthLoading(false);
     }
   };
 
   const register = async (email, password) => {
     try {
       setError(null);
-      setLoading(true);
+      setAuthLoading(true);
 
       console.log('Attempting registration with:', { email, password: '***' });
 
@@ -116,7 +117,7 @@ export const AuthProvider = ({ children }) => {
       setError(error.message);
       return { success: false, error: error.message };
     } finally {
-      setLoading(false);
+      setAuthLoading(false);
     }
   };
 
@@ -165,7 +166,8 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     token,
-    loading,
+    initializing,
+    authLoading,
     error,
     login,
     register,
