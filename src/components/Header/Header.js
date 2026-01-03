@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import logo from '../../images/expensy-logo.png';
 
-function Header() {
+function Header({ onAddTransaction }) {
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
@@ -19,6 +19,20 @@ function Header() {
       <div className="nav-actions">
         {user && (
           <div className="flex items-center space-x-4">
+            <button
+              onClick={onAddTransaction}
+              className="btn btn-primary"
+              style={{
+                padding: '8px 16px',
+                fontSize: '14px',
+                borderRadius: '8px',
+                fontWeight: '600',
+                transform: 'none'
+              }}
+              title="Add Transaction"
+            >
+              + Add Transaction
+            </button>
             <span className="text-sm text-gray-200 hidden sm:block">
               Welcome, {user.email}
             </span>

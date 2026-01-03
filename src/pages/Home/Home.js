@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Header from '../../components/Header/Header';
 import RecentTransactions from '../../components/RecentTransactions/RecentTransactions';
 import SpendingChart from '../../components/SpendingChart/SpendingChart';
@@ -8,9 +8,17 @@ import ActionButtons from '../../components/ActionButtons/ActionButtons';
 import AddTransactionModal from '../../components/AddTransactionModal/AddTransactionModal';
 
 function Home() {
+  const modalRef = useRef();
+
+  const handleAddTransaction = () => {
+    if (modalRef.current) {
+      modalRef.current.openModal();
+    }
+  };
+
   return (
     <div>
-      <Header />
+      <Header onAddTransaction={handleAddTransaction} />
       <div className="container">
         {/* Page Title */}
         <div style={{marginBottom: '40px'}}>
@@ -28,8 +36,7 @@ function Home() {
 
           {/* Right Column */}
           <div className="right-column">
-            <ActionButtons />
-            <div style={{marginTop: '24px'}}>
+            <div>
               <SummaryCards />
             </div>
             <div style={{marginTop: '24px'}}>
@@ -38,7 +45,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <AddTransactionModal />
+      <AddTransactionModal ref={modalRef} />
     </div>
   );
 }

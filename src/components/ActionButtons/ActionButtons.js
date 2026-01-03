@@ -12,9 +12,6 @@ function ActionButtons() {
 
   return (
     <div className="action-buttons" style={{ margin: 0 }}>
-      <button className="btn btn-primary" onClick={() => document.querySelector('button.fixed').click()}>
-        + Add Transaction
-      </button>
       <button className="btn btn-secondary btn-full-width" onClick={handleReset}>
         Reset Month
       </button>

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { useExpense } from '../../contexts/ExpenseContext';
 
-function AddTransactionModal() {
+const AddTransactionModal = forwardRef((props, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const [transactionType, setTransactionType] = useState('expense');
   const [selectedCategory, setSelectedCategory] = useState('bills');
+  const [currentDate, setCurrentDate] = useState('');
   const { addTransaction } = useExpense();
 
   const expenseCategories = [
@@ -24,6 +25,15 @@ function AddTransactionModal() {
   // Use different categories based on transaction type
   const categories = transactionType === 'income' ? incomeCategories : expenseCategories;
 
+  // Expose openModal method to parent component
+  useImperativeHandle(ref, () => ({
+    openModal: () => {
+      // Set current date when modal opens
+      setCurrentDate(new Date().toISOString().split('T')[0]);
+      setIsOpen(true);
+    }
+  }));
+
   const selectType = (type) => {
     setTransactionType(type);
     // Reset to appropriate first category based on type
@@ -39,16 +49,16 @@ function AddTransactionModal() {
     // Reset form
     setTransactionType('expense');
     setSelectedCategory('bills');
+    setCurrentDate('');
   };
 
   const submitTransaction = async () => {
     const amountInput = document.querySelector('.amount-input');
     const descriptionInput = document.querySelector('input[type="text"]');
-    const dateInput = document.querySelector('input[type="date"]');
 
     const amount = parseFloat(amountInput?.value);
     const description = descriptionInput?.value || 'Transaction';
-    const date = dateInput?.value || new Date().toISOString().split('T')[0];
+    const date = currentDate || new Date().toISOString().split('T')[0];
 
     if (!amount || amount <= 0) {
       // Could add visual feedback here instead of alert
@@ -109,14 +119,6 @@ function AddTransactionModal() {
 
   return (
     <>
-      {/* Floating Action Button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 bg-gradient-to-r from-cyan-400 to-cyan-600 text-black rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 z-40"
-      >
-        <span className="text-2xl font-bold">+</span>
-      </button>
-
       {/* Modal Overlay */}
       <div className={`modal-overlay ${isOpen ? 'active' : ''}`} id="addTransactionModal">
         <div className="modal-content">
@@ -184,7 +186,12 @@ function AddTransactionModal() {
             {/* Date */}
             <div className="form-group">
               <label className="form-label">Date</label>
-              <input type="date" className="form-input" />
+              <input
+                type="date"
+                className="form-input"
+                value={currentDate}
+                onChange={(e) => setCurrentDate(e.target.value)}
+              />
             </div>
 
             {/* Footer Buttons */}
@@ -197,6 +204,8 @@ function AddTransactionModal() {
       </div>
     </>
   );
-}
+});
+
+AddTransactionModal.displayName = 'AddTransactionModal';
 
 export default AddTransactionModal;

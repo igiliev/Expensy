@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useExpense } from '../../contexts/ExpenseContext';
@@ -6,9 +6,7 @@ import { useExpense } from '../../contexts/ExpenseContext';
 function SpendingChart() {
   const chartRef = useRef(null);
   const { expenseData, summary } = useExpense();
-
   const monthlyData = expenseData.monthlySpending;
-  const totalExpenses = summary.totalExpenses;
 
   const options = {
     chart: {
@@ -52,7 +50,7 @@ function SpendingChart() {
     },
     tooltip: {
       backgroundColor: 'rgba(26, 31, 46, 0.9)',
-      borderColor: 'rgba(0, 217, 255, 0.3)',
+      // borderColor: 'rgba(0, 217, 255, 0.3)',
       borderRadius: 8,
       style: {
         color: '#FFFFFF'

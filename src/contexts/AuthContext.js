@@ -25,10 +25,24 @@ export const AuthProvider = ({ children }) => {
       const storedToken = localStorage.getItem('token');
       if (storedToken) {
         try {
-          // You could add a /api/auth/me endpoint to verify token and get user data
-          // For now, we'll just set the token and assume it's valid
-          setToken(storedToken);
-          // TODO: Fetch user data from token or API
+          // Verify token and get user data from /api/auth/me endpoint
+          const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${storedToken}`,
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setToken(storedToken);
+            setUser(data.data.user);
+          } else {
+            // Token is invalid, remove it
+            localStorage.removeItem('token');
+            setToken(null);
+          }
         } catch (error) {
           console.error('Token verification failed:', error);
           localStorage.removeItem('token');

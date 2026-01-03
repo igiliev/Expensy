@@ -151,5 +151,30 @@ router.post('/login', [
   }
 });
 
+// @route   GET /api/auth/me
+// @desc    Get current user data
+// @access  Private (requires authentication)
+router.get('/me', require('../middleware/auth'), async (req, res) => {
+  try {
+    // User data is already attached to req.user by the auth middleware
+    res.json({
+      success: true,
+      data: {
+        user: {
+          id: req.user._id,
+          email: req.user.email,
+          createdAt: req.user.createdAt
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Get user data error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error retrieving user data'
+    });
+  }
+});
+
 module.exports = router;
 
