@@ -124,7 +124,7 @@ const AddTransactionModal = forwardRef((props, ref) => {
         <div className="modal-content">
           <div className="modal-header">
             <h2 className="modal-title">Add Transaction</h2>
-            <button className="modal-close" onClick={closeModal}>&times;</button>
+            <button className="modal-close" onClick={closeModal}><span className="modal-close-icon">&times;</span></button>
           </div>
           <div className="modal-body">
             {/* Transaction Type Selector */}

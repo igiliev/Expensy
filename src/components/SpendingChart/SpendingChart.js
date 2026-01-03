@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useExpense } from '../../contexts/ExpenseContext';
@@ -6,7 +6,44 @@ import { useExpense } from '../../contexts/ExpenseContext';
 function SpendingChart() {
   const chartRef = useRef(null);
   const { expenseData, summary } = useExpense();
+  const [selectedPeriod, setSelectedPeriod] = useState('monthly');
+
   const monthlyData = expenseData.monthlySpending;
+  const dailyData = expenseData.dailySpending || [];
+  const yearlyData = expenseData.yearlySpending || [];
+
+  // Get data and chart config based on selected period
+  const getChartData = () => {
+    switch (selectedPeriod) {
+      case 'daily':
+        return {
+          data: dailyData,
+          categories: dailyData.map(item => item.day),
+          title: 'Daily Spending',
+          xAxisTitle: 'Last 7 Days',
+          tooltipFormatter: function() { return `<b>${this.x}</b><br/>Expenses: €${this.y}`; }
+        };
+      case 'yearly':
+        return {
+          data: yearlyData,
+          categories: yearlyData.map(item => item.year),
+          title: 'Yearly Spending',
+          xAxisTitle: 'Years',
+          tooltipFormatter: function() { return `<b>${this.x}</b><br/>Expenses: €${this.y}`; }
+        };
+      case 'monthly':
+      default:
+        return {
+          data: monthlyData,
+          categories: monthlyData.map(item => item.month),
+          title: 'Monthly Spending',
+          xAxisTitle: 'Months',
+          tooltipFormatter: function() { return `<b>${this.x}</b><br/>Expenses: €${this.y}`; }
+        };
+    }
+  };
+
+  const chartData = getChartData();
 
   const options = {
     chart: {
@@ -21,7 +58,7 @@ function SpendingChart() {
       text: null
     },
     xAxis: {
-      categories: monthlyData.map(item => item.month),
+      categories: chartData.categories,
       labels: {
         style: {
           color: '#8B93A8',
@@ -55,9 +92,7 @@ function SpendingChart() {
       style: {
         color: '#FFFFFF'
       },
-      formatter: function() {
-        return `<b>${this.x}</b><br/>Expenses: €${this.y}`;
-      }
+      formatter: chartData.tooltipFormatter
     },
     plotOptions: {
       column: {
@@ -70,11 +105,11 @@ function SpendingChart() {
       }
     },
     series: [{
-      name: 'Monthly Spending',
-      data: monthlyData.map((item, index) => ({
+      name: chartData.title,
+      data: chartData.data.map((item, index) => ({
         y: item.amount,
-        color: index === 2 ? 'rgba(0, 217, 255, 0.8)' : 'rgba(139, 147, 168, 0.4)',
-        borderColor: index === 2 ? '#00D9FF' : 'rgba(139, 147, 168, 0.6)'
+        color: selectedPeriod === 'monthly' && index === 2 ? 'rgba(0, 217, 255, 0.8)' : 'rgba(139, 147, 168, 0.4)',
+        borderColor: selectedPeriod === 'monthly' && index === 2 ? '#00D9FF' : 'rgba(139, 147, 168, 0.6)'
       })),
       borderWidth: 1.5,
       borderRadius: 6
@@ -90,11 +125,26 @@ function SpendingChart() {
   return (
     <div className="section">
       <div className="section-title">
-        <span>Spending Overview</span>
+        <span>Spending Overview Chart</span>
         <div className="period-selector">
-          <button className="period-btn">Daily</button>
-          <button className="period-btn active">Monthly</button>
-          <button className="period-btn">Yearly</button>
+          <button
+            className={`period-btn ${selectedPeriod === 'daily' ? 'active' : ''}`}
+            onClick={() => setSelectedPeriod('daily')}
+          >
+            Daily
+          </button>
+          <button
+            className={`period-btn ${selectedPeriod === 'monthly' ? 'active' : ''}`}
+            onClick={() => setSelectedPeriod('monthly')}
+          >
+            Monthly
+          </button>
+          <button
+            className={`period-btn ${selectedPeriod === 'yearly' ? 'active' : ''}`}
+            onClick={() => setSelectedPeriod('yearly')}
+          >
+            Yearly
+          </button>
         </div>
       </div>
 

@@ -41,7 +41,7 @@ function Header({ onAddTransaction }) {
               className="nav-icon hover:bg-red-50 hover:text-red-600 transition-colors"
               title="Logout"
             >
-              🚪
+              ⏻
             </button>
           </div>
         )}

@@ -2,7 +2,16 @@ import React from 'react';
 import { useExpense } from '../../contexts/ExpenseContext';
 
 function RecentTransactions() {
-  const { expenseData } = useExpense();
+  const { expenseData, deleteTransaction } = useExpense();
+
+  const handleDeleteTransaction = async (transactionId) => {
+    if (window.confirm('Are you sure you want to delete this transaction?')) {
+      const result = await deleteTransaction(transactionId);
+      if (!result.success) {
+        alert('Failed to delete transaction. Please try again.');
+      }
+    }
+  };
 
   return (
     <div className="section transactions-section">
@@ -22,6 +31,13 @@ function RecentTransactions() {
               <div className={`transaction-amount ${transaction.type}`}>
                 {transaction.amount > 0 ? '+' : ''}{Math.abs(transaction.amount).toLocaleString()}€
               </div>
+              <button
+                className="transaction-delete-btn"
+                onClick={() => handleDeleteTransaction(transaction.id)}
+                title="Delete transaction"
+              >
+                <span className="transaction-delete-btn-icon">×</span>
+              </button>
             </div>
           ))
         ) : (

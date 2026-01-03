@@ -82,6 +82,52 @@ export const ExpenseProvider = ({ children }) => {
     });
   };
 
+  // Calculate daily spending for the last 7 days
+  const calculateDailySpending = () => {
+    const days = [];
+    const today = new Date();
+
+    // Get last 7 days
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+      days.push(date);
+    }
+
+    return days.map(date => {
+      const dayTransactions = expenseData.transactions.filter(transaction => {
+        const transactionDate = new Date(transaction.date);
+        return transactionDate.toDateString() === date.toDateString() && transaction.type === 'expense';
+      });
+
+      const dayTotal = dayTransactions.reduce((sum, t) => sum + Math.abs(t.amount), 0);
+      const dayLabel = date.toLocaleDateString('en-US', { weekday: 'short' });
+
+      return { day: dayLabel, amount: dayTotal };
+    });
+  };
+
+  // Calculate yearly spending for the last 5 years
+  const calculateYearlySpending = () => {
+    const currentYear = new Date().getFullYear();
+    const years = [];
+
+    // Get last 5 years
+    for (let i = 4; i >= 0; i--) {
+      years.push(currentYear - i);
+    }
+
+    return years.map(year => {
+      const yearTransactions = expenseData.transactions.filter(transaction => {
+        const transactionDate = new Date(transaction.date);
+        return transactionDate.getFullYear() === year && transaction.type === 'expense';
+      });
+
+      const yearTotal = yearTransactions.reduce((sum, t) => sum + Math.abs(t.amount), 0);
+      return { year: year.toString(), amount: yearTotal };
+    });
+  };
+
   // Calculate categories from transactions
   const calculateCategories = () => {
     const categoryTotals = {};
@@ -173,6 +219,30 @@ export const ExpenseProvider = ({ children }) => {
     }
   };
 
+  // Delete a transaction by ID
+  const deleteTransaction = async (transactionId) => {
+    try {
+      setError(null);
+
+      // Delete from API
+      await apiRequest(`/api/expenses/${transactionId}`, {
+        method: 'DELETE'
+      });
+
+      // Remove from local state
+      setExpenseData(prev => ({
+        ...prev,
+        transactions: prev.transactions.filter(t => t.id !== transactionId)
+      }));
+
+      return { success: true };
+    } catch (error) {
+      console.error('Failed to delete transaction:', error);
+      setError('Failed to delete transaction');
+      return { success: false, error: error.message };
+    }
+  };
+
   // Reset all data (for demo purposes - in real app might want to clear from API too)
   const resetAllData = () => {
     setExpenseData({
@@ -185,6 +255,8 @@ export const ExpenseProvider = ({ children }) => {
     expenseData: {
       ...expenseData,
       monthlySpending: calculateMonthlySpending(),
+      dailySpending: calculateDailySpending(),
+      yearlySpending: calculateYearlySpending(),
       categories: calculateCategories()
     },
     summary: calculateSummary(),
@@ -192,6 +264,7 @@ export const ExpenseProvider = ({ children }) => {
     error,
     resetAllData,
     addTransaction,
+    deleteTransaction,
     fetchExpenses
   };
 

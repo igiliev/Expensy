@@ -117,6 +117,49 @@ router.post('/', auth, [
   }
 });
 
+// @route   DELETE /api/expenses/:id
+// @desc    Delete an expense by ID for authenticated user
+// @access  Private
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Validate ObjectId format
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid expense ID format'
+      });
+    }
+
+    // Find and delete the expense (only if it belongs to the authenticated user)
+    const deletedExpense = await Expense.findOneAndDelete({
+      _id: id,
+      user: req.user._id
+    });
+
+    if (!deletedExpense) {
+      return res.status(404).json({
+        success: false,
+        message: 'Expense not found or you do not have permission to delete it'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Expense deleted successfully',
+      data: { deletedId: id }
+    });
+
+  } catch (error) {
+    console.error('Delete expense error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error while deleting expense'
+    });
+  }
+});
+
 module.exports = router;
 
 

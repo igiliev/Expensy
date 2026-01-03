@@ -4,11 +4,17 @@ import RecentTransactions from '../../components/RecentTransactions/RecentTransa
 import SpendingChart from '../../components/SpendingChart/SpendingChart';
 import SummaryCards from '../../components/SummaryCards/SummaryCards';
 import Categories from '../../components/Categories/Categories';
-import ActionButtons from '../../components/ActionButtons/ActionButtons';
 import AddTransactionModal from '../../components/AddTransactionModal/AddTransactionModal';
+import EmptyState from '../../components/EmptyState/EmptyState';
+import { useExpense } from '../../contexts/ExpenseContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 function Home() {
   const modalRef = useRef();
+  const { expenseData, loading } = useExpense();
+  const { initializing } = useAuth();
+  const hasTransactions = expenseData.transactions && expenseData.transactions.length > 0;
+  const isLoading = initializing || loading;
 
   const handleAddTransaction = () => {
     if (modalRef.current) {
@@ -19,32 +25,41 @@ function Home() {
   return (
     <div>
       <Header onAddTransaction={handleAddTransaction} />
-      <div className="container">
-        {/* Page Title */}
-        <div style={{marginBottom: '40px'}}>
-          <h1 style={{fontSize: '32px', fontWeight: '700'}}>Your Spending</h1>
-          <p style={{color: '#8B93A8', marginTop: '8px', fontSize: '15px'}}>Track and manage your expenses efficiently</p>
+      {isLoading ? (
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p className="loading-text">Loading your expenses...</p>
         </div>
-
-        {/* Main Layout */}
-        <div className="layout">
-          {/* Left Column */}
-          <div>
-            <SpendingChart />
-            <RecentTransactions />
+      ) : !hasTransactions ? (
+        <EmptyState onAddTransaction={handleAddTransaction} />
+      ) : (
+        <div className="container">
+          {/* Page Title */}
+          <div style={{marginBottom: '40px'}}>
+            <h1 style={{fontSize: '32px', fontWeight: '700'}}>Your Spending</h1>
+            <p style={{color: '#8B93A8', marginTop: '8px', fontSize: '16px'}}>Track and manage my expenses efficiently</p>
           </div>
 
-          {/* Right Column */}
-          <div className="right-column">
+          {/* Main Layout */}
+          <div className="layout">
+            {/* Left Column */}
             <div>
-              <SummaryCards />
+              <SpendingChart />
+              <RecentTransactions />
             </div>
-            <div style={{marginTop: '24px'}}>
-              <Categories />
+
+            {/* Right Column */}
+            <div className="right-column">
+              <div>
+                <SummaryCards />
+              </div>
+              <div style={{marginTop: '24px'}}>
+                <Categories />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       <AddTransactionModal ref={modalRef} />
     </div>
   );
