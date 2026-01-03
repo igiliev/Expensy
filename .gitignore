@@ -5,6 +5,8 @@ backend/.env
 node_modules/
 */node_modules/
 
+design/
+
 # Build outputs
 build/
 dist/
