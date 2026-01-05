@@ -1,0 +1,82 @@
+@import '../../styles/variables.scss';
+
+.categoriesList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.categoryCard {
+  padding: $spacing-xl;
+  background: $background-card;
+  border-radius: $radius-md;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $background-card-hover;
+    transform: translateY(-1px);
+  }
+}
+
+.categoryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.categoryIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-xl;
+  flex-shrink: 0;
+  background: rgba($primary-cyan, 0.1);
+  color: $primary-cyan;
+
+  &.bills,
+  &.baby,
+  &.house,
+  &.entertainment,
+  &.food,
+  &.transport {
+    background: rgba($primary-cyan, 0.1);
+    color: $primary-cyan;
+  }
+}
+
+.categoryName {
+  font-size: $font-base;
+  font-weight: 600;
+  color: $text-primary;
+  flex: 1;
+  margin-left: 14px;
+}
+
+.categoryAmount {
+  font-size: $font-sm;
+  font-weight: 700;
+  color: $text-primary;
+  text-align: right;
+  min-width: 80px;
+  margin-left: 14px;
+}
+
+.categoryProgress {
+  width: 100%;
+  height: 6px;
+  background: rgba(139, 147, 168, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.categoryProgressBar {
+  height: 100%;
+  background: linear-gradient(90deg, $primary-cyan, $primary-cyan-dark);
+  border-radius: 3px;
+  transition: width $transition-base;
+}
+

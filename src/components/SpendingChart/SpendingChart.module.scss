@@ -1,0 +1,76 @@
+@import '../../styles/variables.scss';
+
+.periodSelector {
+  display: flex;
+  gap: 12px;
+  margin-bottom: $spacing-xl;
+  background: rgba(26, 31, 46, 0.5);
+  padding: 0 $spacing-sm;
+  border-radius: $radius-md;
+  width: fit-content;
+}
+
+.periodBtn {
+  padding: 10px $spacing-xl;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: $text-secondary;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-fast;
+  font-size: $font-sm;
+
+  &.active {
+    background: $primary-cyan;
+    color: $text-dark;
+    font-weight: 600;
+  }
+
+  &:hover:not(.active) {
+    color: $text-primary;
+  }
+}
+
+.chartCard {
+  background: rgba(26, 31, 46, 0.6);
+  border-radius: $radius-lg;
+  padding: 28px;
+  margin-bottom: $spacing-xl;
+  border: 1px solid $border-color;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba($primary-cyan, 0.05) 0%, transparent 100%);
+    pointer-events: none;
+  }
+}
+
+.chartContainer {
+  position: relative;
+  height: 320px;
+  width: 100%;
+}
+
+.chartValue {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  background: rgba($primary-cyan, 0.1);
+  border: 1px solid $primary-cyan;
+  color: $primary-cyan;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-xl;
+  font-size: $font-sm;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+

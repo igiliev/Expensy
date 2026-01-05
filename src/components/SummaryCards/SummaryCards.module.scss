@@ -1,0 +1,43 @@
+@import '../../styles/variables.scss';
+
+.summaryCard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+}
+
+.summaryItem {
+  background: $background-card;
+  border-radius: $radius-md;
+  padding: $spacing-xl;
+  text-align: center;
+}
+
+.summaryLabel {
+  font-size: $font-sm;
+  color: $text-secondary;
+  margin-bottom: $spacing-sm;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summaryValue {
+  font-size: $font-3xl;
+  font-weight: 700;
+  color: $text-primary;
+
+  &.income {
+    color: $income-color;
+  }
+
+  &.expense {
+    color: $expense-color;
+  }
+
+  &.balance {
+    color: $primary-cyan;
+  }
+}
+

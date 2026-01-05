@@ -1,0 +1,71 @@
+@import '../../styles/variables.scss';
+
+.navbar {
+  background: $background-nav;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid $border-color;
+  padding: 0 $spacing-xl;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: $z-nav;
+  box-shadow: $shadow-sm;
+}
+
+.navBrand {
+  font-size: $font-2xl;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.navLogo {
+  height: 40px;
+  width: auto;
+}
+
+.navActions {
+  display: flex;
+  gap: $spacing-xl;
+  align-items: center;
+}
+
+.navIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-sm;
+  background: rgba(35, 43, 60, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all $transition-fast;
+  font-size: $font-xl;
+  color: $text-primary;
+
+  &:hover {
+    background: rgba($primary-cyan, 0.1);
+    transform: scale(1.05);
+  }
+}
+
+.transactionButton {
+  background: transparent;
+  border: 1px solid $primary-cyan;
+  color: $text-primary;
+  padding: $spacing-smd $spacing-md;
+  border-radius: $radius-md;
+  font-size: $font-base;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all $transition-fast;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background: rgba($primary-cyan, 0.1);
+  }
+}
+

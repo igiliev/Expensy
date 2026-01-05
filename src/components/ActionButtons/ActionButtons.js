@@ -1,5 +1,6 @@
 import React from 'react';
 import { useExpense } from '../../contexts/ExpenseContext';
+import styles from './ActionButtons.module.scss';
 
 function ActionButtons() {
   const { resetAllData } = useExpense();
@@ -11,8 +12,8 @@ function ActionButtons() {
   };
 
   return (
-    <div className="action-buttons" style={{ margin: 0 }}>
-      <button className="btn btn-secondary btn-full-width" onClick={handleReset}>
+    <div className={styles.actionButtons}>
+      <button className={`${styles.btn} ${styles.btnSecondary} ${styles.btnFullWidth}`} onClick={handleReset}>
         Reset Month
       </button>
     </div>

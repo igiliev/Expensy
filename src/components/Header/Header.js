@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import logo from '../../images/expensy-logo.png';
+import styles from './Header.module.scss';
 
 function Header({ onAddTransaction }) {
   const { user, logout } = useAuth();
@@ -12,23 +13,16 @@ function Header({ onAddTransaction }) {
   };
 
   return (
-    <nav className="navbar">
-      <div className="nav-brand">
-        <img src={logo} alt="Expensy AI" className="nav-logo" />
+    <nav className={styles.navbar}>
+      <div className={styles.navBrand}>
+        <img src={logo} alt="Expensy AI" className={styles.navLogo} />
       </div>
-      <div className="nav-actions">
+      <div className={styles.navActions}>
         {user && (
-          <div className="flex items-center space-x-4">
+          <>
             <button
               onClick={onAddTransaction}
-              className="btn btn-primary"
-              style={{
-                padding: '8px 16px',
-                fontSize: '14px',
-                borderRadius: '8px',
-                fontWeight: '600',
-                transform: 'none'
-              }}
+              className={styles.transactionButton}
               title="Add Transaction"
             >
               + Add Transaction
@@ -38,12 +32,12 @@ function Header({ onAddTransaction }) {
             </span>
             <button
               onClick={handleLogout}
-              className="nav-icon hover:bg-red-50 hover:text-red-600 transition-colors"
+              className={styles.navIcon}
               title="Logout"
             >
               ⏻
             </button>
-          </div>
+          </>
         )}
       </div>
     </nav>

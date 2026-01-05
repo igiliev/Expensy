@@ -8,6 +8,7 @@ import AddTransactionModal from '../../components/AddTransactionModal/AddTransac
 import EmptyState from '../../components/EmptyState/EmptyState';
 import { useExpense } from '../../contexts/ExpenseContext';
 import { useAuth } from '../../contexts/AuthContext';
+import styles from './Home.module.scss';
 
 function Home() {
   const modalRef = useRef();
@@ -35,9 +36,9 @@ function Home() {
       ) : (
         <div className="container">
           {/* Page Title */}
-          <div style={{marginBottom: '40px'}}>
-            <h1 style={{fontSize: '32px', fontWeight: '700'}}>Your Spending</h1>
-            <p style={{color: '#8B93A8', marginTop: '8px', fontSize: '16px'}}>Track and manage my expenses efficiently</p>
+          <div className={styles.pageTitle}>
+            <h1 className={styles.pageTitleHeading}>Your Spending</h1>
+            <p className={styles.pageTitleSubtitle}>Track and manage my expenses efficiently</p>
           </div>
 
           {/* Main Layout */}

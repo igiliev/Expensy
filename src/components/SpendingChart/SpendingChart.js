@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useExpense } from '../../contexts/ExpenseContext';
+import styles from './SpendingChart.module.scss';
 
 function SpendingChart() {
   const chartRef = useRef(null);
@@ -126,21 +127,21 @@ function SpendingChart() {
     <div className="section">
       <div className="section-title">
         <span>Spending Overview Chart</span>
-        <div className="period-selector">
+        <div className={styles.periodSelector}>
           <button
-            className={`period-btn ${selectedPeriod === 'daily' ? 'active' : ''}`}
+            className={`${styles.periodBtn} ${selectedPeriod === 'daily' ? styles.active : ''}`}
             onClick={() => setSelectedPeriod('daily')}
           >
             Daily
           </button>
           <button
-            className={`period-btn ${selectedPeriod === 'monthly' ? 'active' : ''}`}
+            className={`${styles.periodBtn} ${selectedPeriod === 'monthly' ? styles.active : ''}`}
             onClick={() => setSelectedPeriod('monthly')}
           >
             Monthly
           </button>
           <button
-            className={`period-btn ${selectedPeriod === 'yearly' ? 'active' : ''}`}
+            className={`${styles.periodBtn} ${selectedPeriod === 'yearly' ? styles.active : ''}`}
             onClick={() => setSelectedPeriod('yearly')}
           >
             Yearly
@@ -149,9 +150,9 @@ function SpendingChart() {
       </div>
 
       {/* Chart Card */}
-      <div className="chart-card">
-        <div className="chart-value">{summary.totalExpenses.toLocaleString()}€</div>
-        <div className="chart-container">
+      <div className={styles.chartCard}>
+        <div className={styles.chartValue}>{summary.totalExpenses.toLocaleString()}€</div>
+        <div className={styles.chartContainer}>
           <HighchartsReact
             highcharts={Highcharts}
             options={options}

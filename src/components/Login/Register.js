@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import styles from './Auth.module.scss';
 
 function Register({ onSwitchToLogin }) {
   const [formData, setFormData] = useState({
@@ -46,28 +47,28 @@ function Register({ onSwitchToLogin }) {
   return (
     <form onSubmit={handleSubmit}>
       {/* Email Input */}
-      <div className="form-group">
-        <label className="form-label">Email Address</label>
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>Email Address</label>
         <input
           type="email"
           name="email"
-          className="form-input"
+          className={styles.formInput}
           placeholder="your@email.com"
           value={formData.email}
           onChange={handleChange}
           required
         />
-        <div className="error-message"></div>
+        <div className={styles.errorMessage}></div>
       </div>
 
       {/* Password Input */}
-      <div className="form-group">
-        <label className="form-label">Password</label>
-        <div className="password-input-group">
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>Password</label>
+        <div className={styles.passwordInputGroup}>
           <input
             type={showPassword ? 'text' : 'password'}
             name="password"
-            className="form-input password-input"
+            className={`${styles.formInput} ${styles.passwordInput}`}
             placeholder="Create a strong password"
             value={formData.password}
             onChange={handleChange}
@@ -75,28 +76,28 @@ function Register({ onSwitchToLogin }) {
           />
           <button
             type="button"
-            className="toggle-password"
+            className={styles.togglePassword}
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? '👁️‍🗨️' : '👁️'}
           </button>
         </div>
-        <div className="error-message"></div>
+        <div className={styles.errorMessage}></div>
         {passwordTooShort && (
-          <div className="error-message show">
+          <div className={`${styles.errorMessage} ${styles.show}`}>
             Password must be at least 6 characters long
           </div>
         )}
       </div>
 
       {/* Confirm Password Input */}
-      <div className="form-group">
-        <label className="form-label">Confirm Password</label>
-        <div className="password-input-group">
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>Confirm Password</label>
+        <div className={styles.passwordInputGroup}>
           <input
             type={showConfirmPassword ? 'text' : 'password'}
             name="confirmPassword"
-            className="form-input password-input"
+            className={`${styles.formInput} ${styles.passwordInput}`}
             placeholder="Confirm your password"
             value={formData.confirmPassword}
             onChange={handleChange}
@@ -104,15 +105,15 @@ function Register({ onSwitchToLogin }) {
           />
           <button
             type="button"
-            className="toggle-password"
+            className={styles.togglePassword}
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           >
             {showConfirmPassword ? '👁️‍🗨️' : '👁️'}
           </button>
         </div>
-        <div className="error-message"></div>
+        <div className={styles.errorMessage}></div>
         {passwordMismatch && (
-          <div className="error-message show">
+          <div className={`${styles.errorMessage} ${styles.show}`}>
             Passwords do not match
           </div>
         )}
@@ -121,7 +122,7 @@ function Register({ onSwitchToLogin }) {
       {/* Sign Up Button */}
       <button
         type="submit"
-        className="btn-auth btn-primary-auth"
+        className={`${styles.btnAuth} ${styles.btnPrimaryAuth}`}
         disabled={authLoading || passwordMismatch || passwordTooShort}
       >
         {authLoading ? (
@@ -138,10 +139,10 @@ function Register({ onSwitchToLogin }) {
       </button>
 
       {/* Footer */}
-      <div className="auth-footer">
-        <span className="auth-footer-text">
+      <div className={styles.authFooter}>
+        <span className={styles.authFooterText}>
           Already have an account?
-          <a className="auth-footer-link" onClick={onSwitchToLogin}>Sign in</a>
+          <a className={styles.authFooterLink} onClick={onSwitchToLogin}>Sign in</a>
         </span>
       </div>
     </form>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Login from './Login';
 import Register from './Register';
-import './Auth.css';
+import styles from './Auth.module.scss';
 
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -11,22 +11,22 @@ function Auth() {
   };
 
   return (
-    <div className="auth-page">
+    <div className={styles.authPage}>
       {/* Background Decoration */}
-      <div className="background-decoration">
-        <div className="gradient-blob blob-1"></div>
-        <div className="gradient-blob blob-2"></div>
+      <div className={styles.backgroundDecoration}>
+        <div className={`${styles.gradientBlob} ${styles.blob1}`}></div>
+        <div className={`${styles.gradientBlob} ${styles.blob2}`}></div>
       </div>
 
       {/* Auth Container */}
-      <div className="auth-container">
-        <div className="auth-box">
+      <div className={styles.authContainer}>
+        <div className={styles.authBox}>
           {/* Header */}
-          <div className="auth-header">
-            <h1 className="auth-title">
+          <div className={styles.authHeader}>
+            <h1 className={styles.authTitle}>
               {isLogin ? 'Welcome Back' : 'Create Account'}
             </h1>
-            <p className="auth-subtitle">
+            <p className={styles.authSubtitle}>
               {isLogin
                 ? 'Sign in to your account to continue'
                 : 'Sign up to start tracking your expenses'
@@ -35,15 +35,15 @@ function Auth() {
           </div>
 
           {/* Tab Buttons */}
-          <div className="tab-buttons">
+          <div className={styles.tabButtons}>
             <button
-              className={`tab-btn ${isLogin ? 'active' : ''}`}
+              className={`${styles.tabBtn} ${isLogin ? styles.active : ''}`}
               onClick={() => switchTab('login')}
             >
               Sign In
             </button>
             <button
-              className={`tab-btn ${!isLogin ? 'active' : ''}`}
+              className={`${styles.tabBtn} ${!isLogin ? styles.active : ''}`}
               onClick={() => switchTab('register')}
             >
               Sign Up

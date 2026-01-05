@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import styles from './Auth.module.scss';
 
 function Login({ onSwitchToRegister }) {
   const [formData, setFormData] = useState({
@@ -36,28 +37,28 @@ function Login({ onSwitchToRegister }) {
   return (
     <form onSubmit={handleSubmit}>
       {/* Email Input */}
-      <div className="form-group">
-        <label className="form-label">Email Address</label>
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>Email Address</label>
         <input
           type="email"
           name="email"
-          className="form-input"
+          className={styles.formInput}
           placeholder="your@email.com"
           value={formData.email}
           onChange={handleChange}
           required
         />
-        <div className="error-message"></div>
+        <div className={styles.errorMessage}></div>
       </div>
 
       {/* Password Input */}
-      <div className="form-group">
-        <label className="form-label">Password</label>
-        <div className="password-input-group">
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>Password</label>
+        <div className={styles.passwordInputGroup}>
           <input
             type={showPassword ? 'text' : 'password'}
             name="password"
-            className="form-input password-input"
+            className={`${styles.formInput} ${styles.passwordInput}`}
             placeholder="Enter your password"
             value={formData.password}
             onChange={handleChange}
@@ -65,28 +66,28 @@ function Login({ onSwitchToRegister }) {
           />
           <button
             type="button"
-            className="toggle-password"
+            className={styles.togglePassword}
             onClick={togglePassword}
           >
             {showPassword ? '👁️‍🗨️' : '👁️'}
           </button>
         </div>
-        <div className="error-message"></div>
+        <div className={styles.errorMessage}></div>
       </div>
 
       {/* Remember Me & Forgot Password */}
-      <div className="checkbox-group">
-        <div className="checkbox-wrapper">
-          <input type="checkbox" id="rememberMe" className="checkbox-input" />
-          <label htmlFor="rememberMe" className="checkbox-label">Remember me</label>
+      <div className={styles.checkboxGroup}>
+        <div className={styles.checkboxWrapper}>
+          <input type="checkbox" id="rememberMe" className={styles.checkboxInput} />
+          <label htmlFor="rememberMe" className={styles.checkboxLabel}>Remember me</label>
         </div>
-        <a className="forgot-password" onClick={() => console.log('Password reset functionality would open here')}>
+        <a className={styles.forgotPassword} onClick={() => console.log('Password reset functionality would open here')}>
           Forgot password?
         </a>
       </div>
 
       {/* Sign In Button */}
-      <button type="submit" className="btn-auth btn-primary-auth" disabled={authLoading}>
+      <button type="submit" className={`${styles.btnAuth} ${styles.btnPrimaryAuth}`} disabled={authLoading}>
         {authLoading ? (
           <>
             <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -101,10 +102,10 @@ function Login({ onSwitchToRegister }) {
       </button>
 
       {/* Footer */}
-      <div className="auth-footer">
-        <span className="auth-footer-text">
+      <div className={styles.authFooter}>
+        <span className={styles.authFooterText}>
           Don't have an account?
-          <a className="auth-footer-link" onClick={onSwitchToRegister}>Sign up</a>
+          <a className={styles.authFooterLink} onClick={onSwitchToRegister}>Sign up</a>
         </span>
       </div>
     </form>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useExpense } from '../../contexts/ExpenseContext';
+import styles from './RecentTransactions.module.scss';
 
 function RecentTransactions() {
   const { expenseData, deleteTransaction } = useExpense();
@@ -14,29 +15,29 @@ function RecentTransactions() {
   };
 
   return (
-    <div className="section transactions-section">
+    <div className={`section ${styles.transactionsSection}`}>
       <div className="section-title">Recent Transactions</div>
-      <div className="transaction-list">
+      <div className={styles.transactionList}>
         {expenseData.transactions.length > 0 ? (
           expenseData.transactions.map(transaction => (
-            <div key={transaction.id} className="transaction-item">
-              <div className="transaction-icon" style={{background: transaction.iconBg}}>
+            <div key={transaction.id} className={styles.transactionItem}>
+              <div className={styles.transactionIcon} style={{background: transaction.iconBg}}>
                 {transaction.icon}
               </div>
-              <div className="transaction-details">
-                <div className="transaction-name">{transaction.name}</div>
-                <div className="transaction-category">{transaction.category}</div>
+              <div className={styles.transactionDetails}>
+                <div className={styles.transactionName}>{transaction.name}</div>
+                <div className={styles.transactionCategory}>{transaction.category}</div>
               </div>
-              <div className="transaction-date">{transaction.date}</div>
-              <div className={`transaction-amount ${transaction.type}`}>
+              <div className={styles.transactionDate}>{transaction.date}</div>
+              <div className={`${styles.transactionAmount} ${styles[transaction.type]}`}>
                 {transaction.amount > 0 ? '+' : ''}{Math.abs(transaction.amount).toLocaleString()}€
               </div>
               <button
-                className="transaction-delete-btn"
+                className={styles.transactionDeleteBtn}
                 onClick={() => handleDeleteTransaction(transaction.id)}
                 title="Delete transaction"
               >
-                <span className="transaction-delete-btn-icon">×</span>
+                <span className={styles.transactionDeleteBtnIcon}>×</span>
               </button>
             </div>
           ))

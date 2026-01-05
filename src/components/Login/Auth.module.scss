@@ -1,0 +1,426 @@
+@import '../../styles/variables.scss';
+
+.authPage {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+  background: linear-gradient(135deg, #0F1419 0%, #1A1F2E 100%);
+  color: $text-primary;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.backgroundDecoration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gradientBlob {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1;
+}
+
+.blob1 {
+  width: 400px;
+  height: 400px;
+  background: $primary-cyan;
+  top: -100px;
+  right: -100px;
+  filter: blur(80px);
+}
+
+.blob2 {
+  width: 300px;
+  height: 300px;
+  background: $primary-cyan-dark;
+  bottom: -50px;
+  left: -100px;
+  filter: blur(80px);
+}
+
+.authContainer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 600px;
+  padding: $spacing-2xl $spacing-xl;
+}
+
+.authBox {
+  background: rgba(35, 43, 60, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid $border-color;
+  border-radius: $radius-2xl;
+  padding: $spacing-3xl;
+  box-shadow: $shadow-lg;
+}
+
+.authHeader {
+  margin-bottom: $spacing-2xl;
+  text-align: center;
+}
+
+.authLogo {
+  font-size: $font-4xl;
+  font-weight: 700;
+  margin-bottom: $spacing-md;
+  letter-spacing: -0.5px;
+
+  span {
+    color: $primary-cyan;
+  }
+}
+
+.authTitle {
+  font-size: $font-2xl;
+  font-weight: 700;
+  margin-bottom: $spacing-sm;
+}
+
+.authSubtitle {
+  font-size: $font-sm;
+  color: $text-secondary;
+  font-weight: 500;
+}
+
+.tabButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: $spacing-xl;
+  background: rgba(26, 31, 46, 0.5);
+  padding: $spacing-sm;
+  border-radius: $radius-md;
+}
+
+.tabBtn {
+  padding: 12px $spacing-xl;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: $text-secondary;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all $transition-fast;
+  font-size: $font-sm;
+
+  &.active {
+    background: $primary-cyan;
+    color: $text-dark;
+    font-weight: 700;
+  }
+
+  &:hover:not(.active) {
+    color: $text-primary;
+  }
+}
+
+.formGroup {
+  margin-bottom: $spacing-xl;
+  text-align: left;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.formLabel {
+  display: block;
+  font-size: $font-sm;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: $text-primary;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.formInput {
+  width: 100%;
+  padding: 14px $spacing-md;
+  background: rgba(15, 20, 25, 0.5);
+  border: 1px solid rgba(139, 147, 168, 0.15);
+  border-radius: $radius-md;
+  color: $text-primary;
+  font-size: $font-sm;
+  font-weight: 500;
+  transition: all $transition-fast;
+  font-family: inherit;
+
+  &::placeholder {
+    color: rgba(139, 147, 168, 0.6);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-cyan;
+    background: rgba(15, 20, 25, 0.7);
+    box-shadow: 0 0 0 3px rgba($primary-cyan, 0.1);
+  }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px rgba(15, 20, 25, 0.5) inset;
+    -webkit-text-fill-color: $text-primary;
+  }
+}
+
+.passwordInputGroup {
+  position: relative;
+}
+
+.togglePassword {
+  position: absolute;
+  right: $spacing-md;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: $text-secondary;
+  cursor: pointer;
+  font-size: $font-lg;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: $primary-cyan;
+  }
+}
+
+.passwordInput {
+  padding-right: 44px;
+}
+
+.errorMessage {
+  display: none;
+  font-size: 13px;
+  color: #F87171;
+  margin-top: 6px;
+  font-weight: 500;
+
+  &.show {
+    display: block;
+  }
+}
+
+.successMessage {
+  display: none;
+  font-size: 13px;
+  color: $income-color;
+  margin-top: 6px;
+  font-weight: 500;
+
+  &.show {
+    display: block;
+  }
+}
+
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-lg;
+}
+
+.checkboxWrapper {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.checkboxInput {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  appearance: none;
+  background: rgba(15, 20, 25, 0.5);
+  border: 1px solid rgba(139, 147, 168, 0.15);
+  border-radius: 6px;
+  transition: all $transition-fast;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    border-color: $border-color-medium;
+  }
+
+  &:checked {
+    background: $primary-cyan;
+    border-color: $primary-cyan;
+
+    &::after {
+      content: '✓';
+      color: $text-dark;
+      font-size: $font-xs;
+      font-weight: 700;
+    }
+  }
+}
+
+.checkboxLabel {
+  font-size: 13px;
+  color: $text-secondary;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.forgotPassword {
+  font-size: 13px;
+  color: $primary-cyan;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all $transition-fast;
+  text-decoration: none;
+
+  &:hover {
+    color: $primary-cyan-hover;
+  }
+}
+
+.btnAuth {
+  width: 100%;
+  padding: $spacing-md $spacing-lg;
+  border: none;
+  border-radius: $radius-md;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all $transition-fast;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.btnPrimaryAuth {
+  background: linear-gradient(135deg, $primary-cyan, $primary-cyan-dark);
+  color: $text-dark;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 28px 0;
+  gap: 12px;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: rgba(139, 147, 168, 0.15);
+}
+
+.dividerText {
+  font-size: 13px;
+  color: $text-secondary;
+  font-weight: 500;
+}
+
+.socialButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.btnSocial {
+  padding: 14px $spacing-md;
+  border: 1px solid rgba(139, 147, 168, 0.15);
+  background: rgba(15, 20, 25, 0.5);
+  border-radius: $radius-md;
+  color: $text-primary;
+  font-weight: 600;
+  font-size: $font-sm;
+  cursor: pointer;
+  transition: all $transition-fast;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+
+  &:hover {
+    border-color: $border-color-medium;
+    background: rgba(15, 20, 25, 0.7);
+  }
+}
+
+.authFooter {
+  text-align: center;
+  margin-top: $spacing-xl;
+  padding-top: 28px;
+  border-top: 1px solid $border-color;
+}
+
+.authFooterText {
+  font-size: 13px;
+  color: $text-secondary;
+  font-weight: 500;
+}
+
+.authFooterLink {
+  color: $primary-cyan;
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all $transition-fast;
+  margin-left: 5px;
+
+  &:hover {
+    color: $primary-cyan-hover;
+  }
+}
+
+@media (max-width: 640px) {
+  .authContainer {
+    padding: $spacing-xl $spacing-md;
+  }
+
+  .authBox {
+    padding: $spacing-xl $spacing-lg;
+    border-radius: $radius-xl;
+  }
+
+  .authHeader {
+    margin-bottom: $spacing-xl;
+  }
+
+  .authLogo {
+    font-size: 28px;
+  }
+
+  .authTitle {
+    font-size: $font-xl;
+  }
+
+  .socialButtons {
+    grid-template-columns: 1fr;
+  }
+
+  .tabButtons {
+    margin-bottom: $spacing-lg;
+  }
+}
+

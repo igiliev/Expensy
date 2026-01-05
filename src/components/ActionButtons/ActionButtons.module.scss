@@ -1,0 +1,58 @@
+@import '../../styles/variables.scss';
+
+.actionButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: $spacing-xl;
+  margin: 0;
+}
+
+.btn {
+  padding: 14px $spacing-lg;
+  border: none;
+  border-radius: $radius-md;
+  font-weight: 600;
+  font-size: $font-sm;
+  cursor: pointer;
+  transition: all $transition-fast;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+}
+
+.btnPrimary {
+  background: $primary-cyan;
+  color: $text-dark;
+  grid-column: 1 / -1;
+  padding: $spacing-md $spacing-lg;
+  font-size: 15px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+}
+
+.btnSecondary {
+  background: rgba(139, 147, 168, 0.1);
+  color: $text-primary;
+  border: 1px solid $border-color-light;
+
+  &:hover {
+    background: rgba(139, 147, 168, 0.15);
+    border-color: $border-color-medium;
+  }
+}
+
+.btnFullWidth {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+  .actionButtons {
+    grid-template-columns: 1fr;
+  }
+}
+

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useExpense } from '../../contexts/ExpenseContext';
+import styles from './Categories.module.scss';
 
 function Categories() {
   const { expenseData } = useExpense();
@@ -7,18 +8,18 @@ function Categories() {
   return (
     <div className="section">
       <div className="section-title">Categories</div>
-      <div className="categories-list">
+      <div className={styles.categoriesList}>
         {expenseData.categories.map(category => (
-          <div key={category.id} className="category-card">
-            <div className="category-header">
-              <div className={`category-icon ${category.id}`}>
+          <div key={category.id} className={styles.categoryCard}>
+            <div className={styles.categoryHeader}>
+              <div className={`${styles.categoryIcon} ${styles[category.id]}`}>
                 {category.icon}
               </div>
-              <div className="category-name">{category.name}</div>
-              <div className="category-amount">{category.amount.toLocaleString()}€</div>
+              <div className={styles.categoryName}>{category.name}</div>
+              <div className={styles.categoryAmount}>{category.amount.toLocaleString()}€</div>
             </div>
-            <div className="category-progress">
-              <div className="category-progress-bar" style={{width: `${category.progress}%`}}></div>
+            <div className={styles.categoryProgress}>
+              <div className={styles.categoryProgressBar} style={{width: `${category.progress}%`}}></div>
             </div>
           </div>
         ))}

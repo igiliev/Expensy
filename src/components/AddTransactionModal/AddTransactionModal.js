@@ -1,5 +1,6 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { useExpense } from '../../contexts/ExpenseContext';
+import styles from './AddTransactionModal.module.scss';
 
 const AddTransactionModal = forwardRef((props, ref) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,6 +8,8 @@ const AddTransactionModal = forwardRef((props, ref) => {
   const [selectedCategory, setSelectedCategory] = useState('bills');
   const [currentDate, setCurrentDate] = useState('');
   const { addTransaction } = useExpense();
+  const amountInputRef = React.useRef(null);
+  const descriptionInputRef = React.useRef(null);
 
   const expenseCategories = [
     { id: 'bills', icon: '📄', name: 'Bills' },
@@ -50,14 +53,13 @@ const AddTransactionModal = forwardRef((props, ref) => {
     setTransactionType('expense');
     setSelectedCategory('bills');
     setCurrentDate('');
+    if (amountInputRef.current) amountInputRef.current.value = '';
+    if (descriptionInputRef.current) descriptionInputRef.current.value = '';
   };
 
   const submitTransaction = async () => {
-    const amountInput = document.querySelector('.amount-input');
-    const descriptionInput = document.querySelector('input[type="text"]');
-
-    const amount = parseFloat(amountInput?.value);
-    const description = descriptionInput?.value || 'Transaction';
+    const amount = parseFloat(amountInputRef.current?.value);
+    const description = descriptionInputRef.current?.value || 'Transaction';
     const date = currentDate || new Date().toISOString().split('T')[0];
 
     if (!amount || amount <= 0) {
@@ -99,7 +101,9 @@ const AddTransactionModal = forwardRef((props, ref) => {
   // Close modal when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (e.target.classList.contains('modal-overlay')) {
+      // Check if click is on the modal overlay (not on modal content)
+      const modalOverlay = document.getElementById('addTransactionModal');
+      if (modalOverlay && e.target === modalOverlay) {
         closeModal();
       }
     };
@@ -120,24 +124,24 @@ const AddTransactionModal = forwardRef((props, ref) => {
   return (
     <>
       {/* Modal Overlay */}
-      <div className={`modal-overlay ${isOpen ? 'active' : ''}`} id="addTransactionModal">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h2 className="modal-title">Add Transaction</h2>
-            <button className="modal-close" onClick={closeModal}><span className="modal-close-icon">&times;</span></button>
+      <div className={`${styles.modalOverlay} ${isOpen ? styles.active : ''}`} id="addTransactionModal">
+        <div className={styles.modalContent}>
+          <div className={styles.modalHeader}>
+            <h2 className={styles.modalTitle}>Add Transaction</h2>
+            <button className={styles.modalClose} onClick={closeModal}><span className={styles.modalCloseIcon}>&times;</span></button>
           </div>
-          <div className="modal-body">
+          <div className={styles.modalBody}>
             {/* Transaction Type Selector */}
-            <div className="form-group">
-              <div className="transaction-type-tabs">
+            <div className={styles.formGroup}>
+              <div className={styles.transactionTypeTabs}>
                 <button
-                  className={`type-tab ${transactionType === 'expense' ? 'active' : ''}`}
+                  className={`${styles.typeTab} ${transactionType === 'expense' ? styles.active : ''}`}
                   onClick={() => selectType('expense')}
                 >
                   <span>💰</span> Expense
                 </button>
                 <button
-                  className={`type-tab ${transactionType === 'income' ? 'active' : ''}`}
+                  className={`${styles.typeTab} ${transactionType === 'income' ? styles.active : ''}`}
                   onClick={() => selectType('income')}
                 >
                   <span>💵</span> Income
@@ -146,13 +150,14 @@ const AddTransactionModal = forwardRef((props, ref) => {
             </div>
 
             {/* Amount Input */}
-            <div className="form-group">
-              <label className="form-label">Amount</label>
-              <div className="amount-input-group">
-                <span className="currency-symbol">€</span>
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Amount</label>
+              <div className={styles.amountInputGroup}>
+                <span className={styles.currencySymbol}>€</span>
                 <input
+                  ref={amountInputRef}
                   type="number"
-                  className="form-input amount-input"
+                  className={`${styles.formInput} ${styles.amountInput}`}
                   placeholder="0.00"
                   min="0"
                   step="0.01"
@@ -161,16 +166,16 @@ const AddTransactionModal = forwardRef((props, ref) => {
             </div>
 
             {/* Category Selection */}
-            <div className="form-group" id="categoryGroup">
-              <label className="form-label">Category</label>
-              <div className="category-grid">
+            <div className={styles.formGroup} id="categoryGroup">
+              <label className={styles.formLabel}>Category</label>
+              <div className={styles.categoryGrid}>
                 {categories.map(category => (
                   <button
                     key={category.id}
-                    className={`category-btn ${selectedCategory === category.id ? 'active' : ''}`}
+                    className={`${styles.categoryBtn} ${selectedCategory === category.id ? styles.active : ''}`}
                     onClick={() => selectCategory(category.id)}
                   >
-                    <span className="category-icon-btn">{category.icon}</span>
+                    <span className={styles.categoryIconBtn}>{category.icon}</span>
                     <span>{category.name}</span>
                   </button>
                 ))}
@@ -178,26 +183,26 @@ const AddTransactionModal = forwardRef((props, ref) => {
             </div>
 
             {/* Description */}
-            <div className="form-group">
-              <label className="form-label">Description</label>
-              <input type="text" className="form-input" placeholder="Add a note..." />
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Description</label>
+              <input ref={descriptionInputRef} type="text" className={styles.formInput} placeholder="Add a note..." />
             </div>
 
             {/* Date */}
-            <div className="form-group">
-              <label className="form-label">Date</label>
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Date</label>
               <input
                 type="date"
-                className="form-input"
+                className={styles.formInput}
                 value={currentDate}
                 onChange={(e) => setCurrentDate(e.target.value)}
               />
             </div>
 
             {/* Footer Buttons */}
-            <div className="form-footer">
-              <button className="btn-modal btn-modal-submit" onClick={submitTransaction}>Add Transaction</button>
-              <button className="btn-modal btn-modal-cancel" onClick={closeModal}>Cancel</button>
+            <div className={styles.formFooter}>
+              <button className={`${styles.btnModal} ${styles.btnModalSubmit}`} onClick={submitTransaction}>Add Transaction</button>
+              <button className={`${styles.btnModal} ${styles.btnModalCancel}`} onClick={closeModal}>Cancel</button>
             </div>
           </div>
         </div>
