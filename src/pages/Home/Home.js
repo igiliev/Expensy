@@ -41,23 +41,18 @@ function Home() {
             <p className={styles.pageTitleSubtitle}>Track and manage my expenses efficiently</p>
           </div>
 
-          {/* Main Layout */}
-          <div className="layout">
-            {/* Left Column */}
-            <div>
-              <SpendingChart />
-              <RecentTransactions />
-            </div>
+          {/* Financial Vital Signs Bar */}
+          <SummaryCards />
 
-            {/* Right Column */}
-            <div className="right-column">
-              <div>
-                <SummaryCards />
-              </div>
-              <div style={{marginTop: '24px'}}>
-                <Categories />
-              </div>
-            </div>
+          {/* Chart Section */}
+          <div className={styles.chartSection}>
+            <SpendingChart />
+          </div>
+
+          {/* Categories and Transactions Side-by-Side */}
+          <div className={styles.categoriesTransactionsRow}>
+            <Categories />
+            <RecentTransactions />
           </div>
         </div>
       )}

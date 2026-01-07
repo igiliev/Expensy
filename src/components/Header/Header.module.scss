@@ -52,20 +52,20 @@
 }
 
 .transactionButton {
-  background: transparent;
-  border: 1px solid $primary-cyan;
-  color: $text-primary;
+  background: $primary-cyan;
+  color: $text-dark;
   padding: $spacing-smd $spacing-md;
   border-radius: $radius-md;
-  font-size: $font-base;
+  font-size: $font-sm;
   font-weight: 600;
   cursor: pointer;
   transition: all $transition-fast;
   display: flex;
   align-items: center;
+  border: none;
 
   &:hover {
-    background: rgba($primary-cyan, 0.1);
+    background: #93efff;
   }
 }
 

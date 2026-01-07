@@ -1,14 +1,9 @@
 @import '../../styles/variables.scss';
 
-.transactionsSection {
-  margin-top: $spacing-xl;
-}
-
 .transactionList {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-height: 400px;
   overflow-y: auto;
   padding-right: $spacing-sm;
 

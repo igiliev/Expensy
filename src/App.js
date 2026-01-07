@@ -12,10 +12,9 @@ function AppContent() {
 
   if (initializing) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-50 to-blue-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+      <div className="loading-overlay">
+        <div className="loading-content">
+          <div className="loading-spinner-small"></div>
         </div>
       </div>
     );

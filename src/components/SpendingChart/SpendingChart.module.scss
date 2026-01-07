@@ -74,3 +74,21 @@
   z-index: 10;
 }
 
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.emptyStateMessage {
+  color: $text-secondary;
+  font-size: $font-base;
+  text-align: center;
+  margin: 0;
+  opacity: 0.7;
+  font-weight: 400;
+}
+

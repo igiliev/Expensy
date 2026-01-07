@@ -46,6 +46,9 @@ function SpendingChart() {
 
   const chartData = getChartData();
 
+  // Check if there's any spending data for the selected period
+  const hasSpendingData = chartData.data.some(item => item.amount > 0);
+
   const options = {
     chart: {
       type: 'column',
@@ -67,7 +70,8 @@ function SpendingChart() {
         }
       },
       lineColor: 'rgba(139, 147, 168, 0.2)',
-      tickColor: 'rgba(139, 147, 168, 0.2)'
+      tickColor: 'rgba(139, 147, 168, 0.2)',
+      visible: hasSpendingData
     },
     yAxis: {
       title: {
@@ -82,9 +86,10 @@ function SpendingChart() {
           return '€' + this.value;
         }
       },
-      gridLineColor: 'rgba(139, 147, 168, 0.1)',
+      gridLineColor: hasSpendingData ? 'rgba(139, 147, 168, 0.1)' : 'transparent',
       lineColor: 'rgba(139, 147, 168, 0.2)',
-      tickColor: 'rgba(139, 147, 168, 0.2)'
+      tickColor: 'rgba(139, 147, 168, 0.2)',
+      visible: hasSpendingData
     },
     tooltip: {
       backgroundColor: 'rgba(26, 31, 46, 0.9)',
@@ -153,11 +158,17 @@ function SpendingChart() {
       <div className={styles.chartCard}>
         <div className={styles.chartValue}>{summary.totalExpenses.toLocaleString()}€</div>
         <div className={styles.chartContainer}>
-          <HighchartsReact
-            highcharts={Highcharts}
-            options={options}
-            ref={chartRef}
-          />
+          {hasSpendingData ? (
+            <HighchartsReact
+              highcharts={Highcharts}
+              options={options}
+              ref={chartRef}
+            />
+          ) : (
+            <div className={styles.emptyState}>
+              <p className={styles.emptyStateMessage}>No spending data for this period yet</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

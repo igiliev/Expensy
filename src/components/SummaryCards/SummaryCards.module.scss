@@ -1,17 +1,24 @@
 @import '../../styles/variables.scss';
 
-.summaryCard {
+.summaryStrip {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: $spacing-md;
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-xl;
+  margin-top: $spacing-lg;
 }
 
 .summaryItem {
   background: $background-card;
   border-radius: $radius-md;
-  padding: $spacing-xl;
+  padding: $spacing-lg $spacing-xl;
   text-align: center;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $background-card-hover;
+    transform: translateY(-2px);
+  }
 }
 
 .summaryLabel {
@@ -38,6 +45,17 @@
 
   &.balance {
     color: $primary-cyan;
+  }
+}
+
+@media (max-width: 768px) {
+  .summaryStrip {
+    grid-template-columns: 1fr;
+    gap: $spacing-sm;
+  }
+
+  .summaryValue {
+    font-size: $font-2xl;
   }
 }
 

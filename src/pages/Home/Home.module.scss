@@ -1,21 +1,33 @@
 @import '../../styles/variables.scss';
 
 .pageTitle {
-  margin-bottom: $spacing-2xl;
+  margin-bottom: $spacing-lg;
 }
 
 .pageTitleHeading {
-  font-size: $font-4xl;
+  font-size: $font-5xl;
   font-weight: 700;
 }
 
 .pageTitleSubtitle {
   color: $text-secondary;
   margin-top: $spacing-sm;
-  font-size: $font-base;
+  font-size: $font-lg;
 }
 
-.rightColumn {
-  // Additional styles if needed
+.chartSection {
+  margin-bottom: $spacing-xl;
+}
+
+.categoriesTransactionsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-xl;
+}
+
+@media (max-width: 1024px) {
+  .categoriesTransactionsRow {
+    grid-template-columns: 1fr;
+  }
 }
 
