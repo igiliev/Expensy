@@ -13,6 +13,13 @@
   top: 0;
   z-index: $z-nav;
   box-shadow: $shadow-sm;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 15px;
+    height: 240px;
+    padding: 20px 0;
+  }
 }
 
 .navBrand {
@@ -30,6 +37,11 @@
   display: flex;
   gap: $spacing-xl;
   align-items: center;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 20px;
+  }
 }
 
 .navIcon {

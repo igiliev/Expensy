@@ -400,6 +400,10 @@
 }
 
 @media (max-width: 640px) {
+  .authPage {
+    align-items: baseline;
+  }
+
   .authContainer {
     padding: $spacing-xl $spacing-md;
   }

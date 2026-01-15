@@ -1,5 +1,20 @@
 @import '../../styles/variables.scss';
 
+
+.spendingChart {
+  background: $background-section;
+  backdrop-filter: blur(10px);
+  border-top-left-radius: $radius-xl;
+  border-bottom-left-radius: $radius-xl;
+  padding: $spacing-xl;
+  transition: all $transition-base;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 .periodSelector {
   display: flex;
   gap: 12px;
@@ -8,6 +23,8 @@
   padding: 0 $spacing-sm;
   border-radius: $radius-md;
   width: fit-content;
+  max-width: 100%;
+  flex-shrink: 1;
 }
 
 .periodBtn {
@@ -34,12 +51,20 @@
 
 .chartCard {
   background: rgba(26, 31, 46, 0.6);
-  border-radius: $radius-lg;
+  border-radius: 0;
   padding: 28px;
-  margin-bottom: $spacing-xl;
+  margin-bottom: 0;
   border: 1px solid $border-color;
   position: relative;
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  box-sizing: border-box;
 
   &::before {
     content: '';
@@ -57,6 +82,11 @@
   position: relative;
   height: 320px;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .chartValue {
@@ -72,6 +102,8 @@
   font-weight: 600;
   backdrop-filter: blur(10px);
   z-index: 10;
+  max-width: calc(100% - 20px);
+  box-sizing: border-box;
 }
 
 .emptyState {
@@ -90,5 +122,17 @@
   margin: 0;
   opacity: 0.7;
   font-weight: 400;
+}
+
+@media (max-width: 1024px) {
+  .periodSelector {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .periodBtn {
+    padding: 8px $spacing-md;
+    font-size: $font-xs;
+  }
 }
 

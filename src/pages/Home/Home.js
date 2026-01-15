@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import Header from '../../components/Header/Header';
 import RecentTransactions from '../../components/RecentTransactions/RecentTransactions';
 import SpendingChart from '../../components/SpendingChart/SpendingChart';
+import BudgetChart from '../../components/BudgetChart/BudgetChart';
 import SummaryCards from '../../components/SummaryCards/SummaryCards';
 import Categories from '../../components/Categories/Categories';
 import AddTransactionModal from '../../components/AddTransactionModal/AddTransactionModal';
@@ -46,7 +47,14 @@ function Home() {
 
           {/* Chart Section */}
           <div className={styles.chartSection}>
-            <SpendingChart />
+            <div className={styles.chartsRow}>
+              <div className={styles.chartItem}>
+                <SpendingChart />
+              </div>
+              <div className={styles.chartItem}>
+                <BudgetChart />
+              </div>
+            </div>
           </div>
 
           {/* Categories and Transactions Side-by-Side */}

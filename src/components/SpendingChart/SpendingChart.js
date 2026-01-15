@@ -54,6 +54,7 @@ function SpendingChart() {
       type: 'column',
       backgroundColor: 'transparent',
       height: 320,
+      reflow: true,
       style: {
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif'
       }
@@ -93,7 +94,6 @@ function SpendingChart() {
     },
     tooltip: {
       backgroundColor: 'rgba(26, 31, 46, 0.9)',
-      // borderColor: 'rgba(0, 217, 255, 0.3)',
       borderRadius: 8,
       style: {
         color: '#FFFFFF'
@@ -129,7 +129,7 @@ function SpendingChart() {
   };
 
   return (
-    <div className="section">
+    <div className={styles.spendingChart}>
       <div className="section-title">
         <span>Spending Overview Chart</span>
         <div className={styles.periodSelector}>
