@@ -393,12 +393,14 @@
 }
 
 .authFooterLink {
-  color: $primary-cyan;
   cursor: pointer;
   font-weight: 700;
   text-decoration: none;
   transition: all $transition-fast;
   margin-left: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
 
   &:hover {
     color: $primary-cyan-hover;
