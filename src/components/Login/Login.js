@@ -81,9 +81,6 @@ function Login({ onSwitchToRegister }) {
           <input type="checkbox" id="rememberMe" className={styles.checkboxInput} />
           <label htmlFor="rememberMe" className={styles.checkboxLabel}>Remember me</label>
         </div>
-        <a className={styles.forgotPassword} onClick={() => console.log('Password reset functionality would open here')}>
-          Forgot password?
-        </a>
       </div>
 
       {/* Sign In Button */}
@@ -105,7 +102,7 @@ function Login({ onSwitchToRegister }) {
       <div className={styles.authFooter}>
         <span className={styles.authFooterText}>
           Don't have an account?
-          <a className={styles.authFooterLink} onClick={onSwitchToRegister}>Sign up</a>
+          <button className={styles.authFooterLink} onClick={onSwitchToRegister}>Sign up</button>
         </span>
       </div>
     </form>

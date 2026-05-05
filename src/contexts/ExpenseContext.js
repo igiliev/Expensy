@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
 
 const ExpenseContext = createContext();
@@ -31,7 +31,7 @@ export const ExpenseProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   // Fetch expenses from API
-  const fetchExpenses = async () => {
+  const fetchExpenses = useCallback(async () => {
     if (!isAuthenticated) return;
 
     try {
@@ -49,7 +49,7 @@ export const ExpenseProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiRequest, isAuthenticated]);
 
   // Load expenses when user becomes authenticated
   useEffect(() => {

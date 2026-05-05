@@ -142,7 +142,7 @@ function Register({ onSwitchToLogin }) {
       <div className={styles.authFooter}>
         <span className={styles.authFooterText}>
           Already have an account?
-          <a className={styles.authFooterLink} onClick={onSwitchToLogin}>Sign in</a>
+          <button className={styles.authFooterLink} onClick={onSwitchToLogin}>Sign in</button>
         </span>
       </div>
     </form>
