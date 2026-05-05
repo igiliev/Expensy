@@ -325,6 +325,12 @@
     cursor: not-allowed;
     transform: none;
   }
+
+  .animateSpin {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
 }
 
 .divider {
@@ -350,12 +356,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-}
-
-.animateSpin {
-  width: 25px;
-  height: 25px;
-  margin-right: 10px;
 }
 
 .btnSocial {
