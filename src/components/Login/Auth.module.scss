@@ -299,6 +299,12 @@
   align-items: center;
   justify-content: center;
   margin-top: 28px;
+  gap: 10px;
+
+  .animate-spin {
+    height: 30px;
+    width: auto;
+  }
 }
 
 .btnPrimaryAuth {
