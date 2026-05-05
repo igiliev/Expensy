@@ -8,7 +8,7 @@ function Login({ onSwitchToRegister }) {
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
-  const { login, authLoading, error } = useAuth();
+  const { login, authLoading } = useAuth();
 
   const handleChange = (e) => {
     setFormData({

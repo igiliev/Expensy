@@ -10,7 +10,7 @@ function Register({ onSwitchToLogin }) {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { register, authLoading, error } = useAuth();
+  const { register, authLoading } = useAuth();
 
   const handleChange = (e) => {
     setFormData({

@@ -62,7 +62,7 @@ export const ExpenseProvider = ({ children }) => {
         transactions: []
       });
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, fetchExpenses]);
 
   // Calculate monthly spending from transactions
   const calculateMonthlySpending = () => {
