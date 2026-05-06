@@ -22,6 +22,15 @@
   }
 }
 
+.mobileCollapsed {
+  @media (max-width: 640px) {
+    height: 72px;
+    padding: 8px 12px;
+    flex-direction: row;
+    gap: 0;
+  }
+}
+
 .navBrand {
   font-size: $font-2xl;
   font-weight: 700;
@@ -44,22 +53,23 @@
   }
 }
 
-.navIcon {
-  width: 40px;
+.logoutButton {
+  min-width: 80px;
   height: 40px;
+  padding: 0 $spacing-smd;
   border-radius: $radius-sm;
   background: rgba(35, 43, 60, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all $transition-fast;
-  font-size: $font-xl;
+  font-size: $font-sm;
+  font-weight: 600;
   color: $text-primary;
+  border: none;
 
   &:hover {
     background: rgba($primary-cyan, 0.1);
-    transform: scale(1.05);
   }
 }
 
@@ -78,6 +88,30 @@
 
   &:hover {
     background: #93efff;
+  }
+}
+
+.welcomeText {
+  font-size: $font-sm;
+  color: $text-secondary;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
+}
+
+.mobileCollapsed .navBrand {
+  @media (max-width: 640px) {
+    display: none;
+  }
+}
+
+.mobileCollapsed .navActions {
+  @media (max-width: 640px) {
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;
+    gap: 10px;
   }
 }
 

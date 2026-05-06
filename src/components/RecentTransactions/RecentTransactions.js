@@ -25,13 +25,13 @@ function RecentTransactions() {
                 {transaction.icon}
               </div>
               <div className={styles.transactionDetails}>
-                <div className={styles.transactionName}>{transaction.name}</div>
-                <div className={styles.transactionCategory}>{transaction.category}</div>
+                <span>{transaction.name}</span>
+                <span>{transaction.category}</span>
+                <span>{transaction.date}</span>
               </div>
-              <div className={styles.transactionDate}>{transaction.date}</div>
-              <div className={`${styles.transactionAmount} ${styles[transaction.type]}`}>
-                {transaction.amount > 0 ? '+' : ''}{Math.abs(transaction.amount).toLocaleString()}€
-              </div>
+                <div className={styles.transactionAmount}>
+                  <span>{transaction.amount > 0 ? '+' : ''}{Math.abs(transaction.amount).toLocaleString()}€</span>
+                </div>
               <button
                 className={styles.transactionDeleteBtn}
                 onClick={() => handleDeleteTransaction(transaction.id)}

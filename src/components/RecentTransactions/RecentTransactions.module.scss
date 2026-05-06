@@ -29,7 +29,7 @@
 .transactionItem {
   display: flex;
   align-items: center;
-  padding: $spacing-md $spacing-xl;
+  padding: $spacing-md $spacing-xl $spacing-md $spacing-xs;
   background: $background-card;
   border-radius: $radius-md;
   transition: all $transition-fast;
@@ -59,7 +59,10 @@
 
 .transactionDetails {
   flex: 1;
-  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  align-items: flex-start;
 }
 
 .transactionName {
@@ -85,7 +88,7 @@
   font-size: $font-base;
   font-weight: 700;
   text-align: right;
-  min-width: 80px;
+  color: $expense-color;
 
   &.expense {
     color: $expense-color;
