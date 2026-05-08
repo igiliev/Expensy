@@ -6,12 +6,59 @@ import styles from './BudgetChart.module.scss';
 
 function BudgetChart() {
   const chartRef = useRef(null);
-  const { summary } = useExpense();
+  const { expenseData, summary } = useExpense();
+
+  // Category colors
+  const categoryColors = {
+    bills: '#FF6B35',
+    baby: '#FF8FAD',
+    house: '#FFD700',
+    entertainment: '#00D9FF',
+    food: '#10B981',
+    transport: '#6366F1'
+  };
+
+  // Calculate category totals for current month
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+
+  const categoryTotals = {};
   
-  // Default monthly budget limit (can be made configurable later)
-  const monthlyLimit = 35000;
-  const spent = summary.totalExpenses;
-  const remaining = Math.max(0, monthlyLimit - spent);
+  expenseData.transactions.forEach(transaction => {
+    const transactionDate = new Date(transaction.date);
+    if (
+      transactionDate.getMonth() === currentMonth &&
+      transactionDate.getFullYear() === currentYear &&
+      transaction.type === 'expense'
+    ) {
+      const categoryMapping = {
+        'Bills': 'bills',
+        'Baby': 'baby',
+        'House': 'house',
+        'Entertainment': 'entertainment',
+        'Food': 'food',
+        'Transport': 'transport',
+        'Utilities': 'bills',
+        'Food & Dining': 'food',
+        'Transportation': 'transport'
+      };
+
+      const categoryId = categoryMapping[transaction.category] || 'bills';
+      categoryTotals[categoryId] = (categoryTotals[categoryId] || 0) + Math.abs(transaction.amount);
+    }
+  });
+
+  // Prepare chart data
+  const chartData = Object.entries(categoryTotals)
+    .filter(([_, amount]) => amount > 0)
+    .map(([categoryId, amount]) => {
+      const category = expenseData.categories.find(cat => cat.id === categoryId);
+      return {
+        name: `${category?.name || categoryId} ${(amount / summary.totalExpenses * 100).toFixed(1)}%`,
+        y: amount,
+        color: categoryColors[categoryId]
+      };
+    });
 
   const options = {
     chart: {
@@ -27,40 +74,35 @@ function BudgetChart() {
       text: null
     },
     tooltip: {
-      enabled: false
+      pointFormat: '<b>{point.y.toLocaleString()}€</b><br/>{point.percentage:.1f}%'
     },
     plotOptions: {
       pie: {
-        innerSize: '65%',
         borderWidth: 0,
         dataLabels: {
-          enabled: false
+          enabled: true,
+          format: '<b>{point.name}</b>',
+          style: {
+            color: 'rgba(255, 255, 255, 0.8)',
+            fontSize: '12px'
+          }
         },
         states: {
           hover: {
             enabled: true
           }
-        },
-        startAngle: -90,
-        endAngle: 270
+        }
       }
     },
     series: [{
-      name: 'Budget',
-      data: [
+      name: 'Monthly Spending',
+      data: chartData.length > 0 ? chartData : [
         {
-          name: 'Spent',
-          y: spent,
-          color: '#FF6B35'
-        },
-        {
-          name: 'Remaining',
-          y: remaining,
+          name: 'No spending data',
+          y: 100,
           color: 'rgba(139, 147, 168, 0.15)'
         }
-      ],
-      size: '85%',
-      center: ['50%', '50%']
+      ]
     }],
     credits: {
       enabled: false
@@ -70,7 +112,7 @@ function BudgetChart() {
   return (
     <div className={styles.budgetChart}>
       <div className="section-title">
-        <span>Budget</span>
+        <span>Spending by Category</span>
       </div>
 
       {/* Chart Card */}
@@ -81,22 +123,29 @@ function BudgetChart() {
             options={options}
             ref={chartRef}
           />
-          <div className={styles.budgetInfo}>
-            <div className={styles.budgetAmount}>
-              <span className={styles.budgetValue}>{spent.toLocaleString()}€</span>
-              <span className={styles.budgetLabel}>Spent</span>
-            </div>
-          </div>
         </div>
         <div className={styles.budgetDetails}>
-          <div className={styles.budgetDetailItem}>
-            <div className={styles.budgetDetailValue}>{monthlyLimit.toLocaleString()}€</div>
-            <div className={styles.budgetDetailLabel}>Monthly Limit</div>
-          </div>
-          <div className={styles.budgetDetailItem}>
-            <div className={styles.budgetDetailValue}>{remaining.toLocaleString()}€</div>
-            <div className={styles.budgetDetailLabel}>Remaining</div>
-          </div>
+          {Object.entries(categoryTotals)
+            .filter(([_, amount]) => amount > 0)
+            .map(([categoryId, amount]) => {
+              const category = expenseData.categories.find(cat => cat.id === categoryId);
+              const percentage = (amount / summary.totalExpenses * 100).toFixed(1);
+              return (
+                <div key={categoryId} className={styles.budgetDetailItem}>
+                  <div className={styles.categoryLegend}>
+                    <div
+                      className={styles.colorDot}
+                      style={{ backgroundColor: categoryColors[categoryId] }}
+                    />
+                    <div className={styles.categoryName}>{category?.name}</div>
+                  </div>
+                  <div className={styles.categoryAmount}>
+                    <span className={styles.budgetDetailValue}>{amount.toLocaleString()}€</span>
+                    <span className={styles.percentageLabel}>{percentage}%</span>
+                  </div>
+                </div>
+              );
+            })}
         </div>
       </div>
     </div>
