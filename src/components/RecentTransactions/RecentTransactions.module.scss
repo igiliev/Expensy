@@ -29,11 +29,15 @@
 .transactionItem {
   display: flex;
   align-items: center;
-  padding: $spacing-md $spacing-xl $spacing-md $spacing-xs;
+  padding: $spacing-md $spacing-xl;
   background: $background-card;
   border-radius: $radius-md;
   transition: all $transition-fast;
   position: relative;
+
+  @media screen and (max-width: 640px) {
+    padding: $spacing-md $spacing-xl $spacing-md $spacing-xs;
+  }
 
   &:hover {
     background: $background-card-hover;

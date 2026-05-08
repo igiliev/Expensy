@@ -120,7 +120,7 @@ router.post('/', auth, [
 // @route   DELETE /api/expenses/:id
 // @desc    Delete an expense by ID for authenticated user
 // @access  Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id/?', auth, async (req, res) => {
   try {
     const { id } = req.params;
 

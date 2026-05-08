@@ -38,7 +38,7 @@ function Home() {
         <div className="container">
           {/* Page Title */}
           <div className={styles.pageTitle}>
-            <h1 className={styles.pageTitleHeading}>Your Spending</h1>
+            <h1 className={styles.pageTitleHeading}>My Spending</h1>
             <p className={styles.pageTitleSubtitle}>Track and manage my expenses efficiently</p>
           </div>
 
