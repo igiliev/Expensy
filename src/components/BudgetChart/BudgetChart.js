@@ -79,6 +79,8 @@ function BudgetChart() {
     plotOptions: {
       pie: {
         borderWidth: 0,
+        size: '90%',
+        center: ['50%', '50%'],
         dataLabels: {
           enabled: true,
           format: '<b>{point.name}</b>',
@@ -104,6 +106,25 @@ function BudgetChart() {
         }
       ]
     }],
+    responsive: {
+      rules: [
+        {
+          condition: {
+            maxWidth: 640
+          },
+          chartOptions: {
+            chart: {
+              height: 420
+            },
+            plotOptions: {
+              pie: {
+                size: '98%'
+              }
+            }
+          }
+        }
+      ]
+    },
     credits: {
       enabled: false
     }
