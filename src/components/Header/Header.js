@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import logo from '../../images/expensy-logo.png';
+import logo from '../../images/expensy-logo.svg';
 import styles from './Header.module.scss';
 
 function Header({ onAddTransaction }) {

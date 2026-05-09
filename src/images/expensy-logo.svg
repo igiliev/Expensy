@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 72" width="248" height="72" role="img">
+  <title>Expensy</title>
+  <desc>Expensy logo — coin with upward trend arrow and wordmark</desc>
+
+  <!-- coin glow halo -->
+  <circle cx="36" cy="36" r="34" fill="#00D9FF" opacity="0.08"/>
+  <!-- coin outer ring -->
+  <circle cx="36" cy="36" r="28" fill="#00D9FF" opacity="0.12" stroke="#00D9FF" stroke-width="2.2"/>
+  <!-- coin inner ring -->
+  <circle cx="36" cy="36" r="19" fill="none" stroke="#00D9FF" stroke-width="1" opacity="0.45"/>
+  <!-- euro symbol -->
+  <text x="36" y="44" text-anchor="middle" font-size="20" font-weight="700" fill="#00D9FF" font-family="system-ui, -apple-system, sans-serif">€</text>
+  <!-- upward arrow breaking out of top-right -->
+  <path d="M46 20 L62 4" stroke="#00D9FF" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M53 4 L62 4 L62 13" stroke="#00D9FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- wordmark -->
+  <text x="80" y="42" font-size="28" font-weight="600" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" letter-spacing="-0.5">Expensy</text>
+</svg>

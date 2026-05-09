@@ -79,8 +79,6 @@ function BudgetChart() {
     plotOptions: {
       pie: {
         borderWidth: 0,
-        size: '90%',
-        center: ['50%', '50%'],
         dataLabels: {
           enabled: true,
           format: '<b>{point.name}</b>',
@@ -113,12 +111,9 @@ function BudgetChart() {
             maxWidth: 640
           },
           chartOptions: {
-            chart: {
-              height: 420
-            },
             plotOptions: {
               pie: {
-                size: '98%'
+                size: '95%'
               }
             }
           }
@@ -161,7 +156,7 @@ function BudgetChart() {
                     <div className={styles.categoryName}>{category?.name}</div>
                   </div>
                   <div className={styles.categoryAmount}>
-                    <span className={styles.budgetDetailValue}>{amount.toLocaleString()}€</span>
+                    <span className={styles.budgetDetailValue}>{amount.toLocaleString()}€ - </span>
                     <span className={styles.percentageLabel}>{percentage}%</span>
                   </div>
                 </div>
