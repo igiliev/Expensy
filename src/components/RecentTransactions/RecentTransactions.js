@@ -29,9 +29,9 @@ function RecentTransactions() {
                 <span>{transaction.category}</span>
                 <span>{transaction.date}</span>
               </div>
-                <div className={styles.transactionAmount}>
-                  <span>{transaction.amount > 0 ? '+' : ''}{Math.abs(transaction.amount).toLocaleString()}€</span>
-                </div>
+              <div className={`${styles.transactionAmount} ${transaction.type === 'income' || transaction.amount > 0 ? styles.income : styles.expense}`}>
+                <span>{transaction.amount > 0 ? '+' : ''}{Math.abs(transaction.amount).toLocaleString()}€</span>
+              </div>
               <button
                 className={styles.transactionDeleteBtn}
                 onClick={() => handleDeleteTransaction(transaction.id)}
