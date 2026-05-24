@@ -15,19 +15,11 @@
   box-shadow: $shadow-sm;
 
   @media (max-width: 640px) {
-    flex-direction: column;
-    gap: 15px;
-    height: 240px;
-    padding: 20px 0;
-  }
-}
-
-.mobileCollapsed {
-  @media (max-width: 640px) {
+    flex-direction: row;
+    gap: 12px;
     height: 72px;
     padding: 8px 12px;
-    flex-direction: row;
-    gap: 0;
+    justify-content: space-between;
   }
 }
 
@@ -39,8 +31,12 @@
 }
 
 .navLogo {
-  height: 50px;
+  height: 42px;
   width: auto;
+
+  @media (max-width: 640px) {
+    height: 38px;
+  }
 }
 
 .navActions {
@@ -49,8 +45,10 @@
   align-items: center;
 
   @media (max-width: 640px) {
-    flex-direction: column;
-    gap: 20px;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;
+    gap: 10px;
   }
 }
 
@@ -95,26 +93,10 @@
 .welcomeText {
   font-size: $font-sm;
   color: #e5e7eb;
-}
 
-.mobileCollapsed .navBrand {
   @media (max-width: 640px) {
     display: none;
   }
 }
 
-.mobileCollapsed .navActions {
-  @media (max-width: 640px) {
-    flex-direction: row;
-    width: 100%;
-    justify-content: flex-end;
-    gap: 10px;
-  }
-}
-
-.mobileCollapsed .welcomeText {
-  @media (max-width: 640px) {
-    display: none;
-  }
-}
 
