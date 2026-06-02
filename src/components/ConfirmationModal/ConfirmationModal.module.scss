@@ -1,0 +1,129 @@
+@import '../../styles/variables.scss';
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: $z-modal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-lg;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(6px);
+}
+
+.modalContent {
+  width: min(100%, 440px);
+  overflow: hidden;
+  border: 1px solid $border-color-light;
+  border-radius: $radius-lg;
+  background: linear-gradient(135deg, rgba(20, 23, 38, 0.98), rgba(35, 43, 60, 0.98));
+  box-shadow: $shadow-lg;
+  animation: modalEnter $transition-base;
+}
+
+.accentLine {
+  height: 3px;
+  background: linear-gradient(90deg, $primary-cyan, $income-color);
+}
+
+.modalBody {
+  padding: $spacing-xl $spacing-xl $spacing-lg;
+}
+
+.modalTitle {
+  margin-bottom: $spacing-smd;
+  color: $text-primary;
+  font-size: $font-2xl;
+  font-weight: 700;
+}
+
+.modalMessage {
+  color: $text-secondary;
+  font-size: $font-base;
+  line-height: 1.6;
+}
+
+.modalActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-smd;
+  padding: 0 $spacing-xl $spacing-xl;
+}
+
+.cancelButton,
+.confirmButton {
+  min-height: 44px;
+  border-radius: $radius-md;
+  font-size: $font-sm;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all $transition-fast;
+}
+
+.cancelButton {
+  border: 1px solid $border-color-light;
+  background: rgba(139, 147, 168, 0.1);
+  color: $text-primary;
+
+  &:hover {
+    border-color: $border-color-medium;
+    background: rgba(139, 147, 168, 0.16);
+  }
+}
+
+.confirmButton {
+  border: none;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+}
+
+.primary {
+  background: linear-gradient(135deg, $primary-cyan, $primary-cyan-dark);
+  color: $text-dark;
+}
+
+.danger {
+  background: $expense-color;
+  color: $text-primary;
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 640px) {
+  .modalOverlay {
+    align-items: flex-end;
+    padding: $spacing-smd;
+  }
+
+  .modalContent {
+    width: 100%;
+    border-radius: $radius-lg;
+  }
+
+  .modalBody {
+    padding: $spacing-lg;
+  }
+
+  .modalTitle {
+    font-size: $font-xl;
+  }
+
+  .modalActions {
+    grid-template-columns: 1fr;
+    padding: 0 $spacing-lg $spacing-lg;
+  }
+}
