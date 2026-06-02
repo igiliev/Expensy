@@ -13,6 +13,7 @@ const formatExpenseForFrontend = (expense) => {
     iconBg: expense.type === 'income' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(0, 217, 255, 0.1)',
     name: expense.description,
     category: expense.category,
+    dateISO: new Date(expense.date).toISOString(),
     date: new Date(expense.date).toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',

@@ -25,7 +25,7 @@ function BudgetChart() {
   const categoryTotals = {};
   
   expenseData.transactions.forEach(transaction => {
-    const transactionDate = new Date(transaction.date);
+    const transactionDate = new Date(transaction.dateISO || transaction.date);
     if (
       transactionDate.getMonth() === currentMonth &&
       transactionDate.getFullYear() === currentYear &&
@@ -169,4 +169,3 @@ function BudgetChart() {
 }
 
 export default BudgetChart;
-

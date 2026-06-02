@@ -83,6 +83,7 @@ const AddTransactionModal = forwardRef((props, ref) => {
         month: 'long',
         day: 'numeric'
       }),
+      rawDate: date,
       amount: transactionType === 'income' ? amount : -amount,
       type: transactionType
     };

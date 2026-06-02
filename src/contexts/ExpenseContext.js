@@ -21,14 +21,24 @@ const defaultCategories = [
   { id: 'transport', name: 'Transport', icon: '🚗', amount: 0, progress: 0 }
 ];
 
+const getTransactionDate = (transaction) => new Date(transaction.dateISO || transaction.date);
+
+const getDateInputValue = (date) => date.toISOString().split('T')[0];
+
 export const ExpenseProvider = ({ children }) => {
-  const { apiRequest, isAuthenticated } = useAuth();
+  const { apiRequest, isAuthenticated, user } = useAuth();
   const [expenseData, setExpenseData] = useState({
     categories: defaultCategories,
     transactions: []
   });
+  const [activeMonthStart, setActiveMonthStart] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const getActiveMonthStorageKey = useCallback(() => {
+    const userKey = user?.id || user?._id || user?.email || 'guest';
+    return `expensy-active-month-start:${userKey}`;
+  }, [user]);
 
   // Fetch expenses from API
   const fetchExpenses = useCallback(async () => {
@@ -54,6 +64,7 @@ export const ExpenseProvider = ({ children }) => {
   // Load expenses when user becomes authenticated
   useEffect(() => {
     if (isAuthenticated) {
+      setActiveMonthStart(localStorage.getItem(getActiveMonthStorageKey()));
       fetchExpenses();
     } else {
       // Reset data when user logs out
@@ -61,8 +72,22 @@ export const ExpenseProvider = ({ children }) => {
         categories: defaultCategories,
         transactions: []
       });
+      setActiveMonthStart(null);
     }
-  }, [isAuthenticated, fetchExpenses]);
+  }, [isAuthenticated, fetchExpenses, getActiveMonthStorageKey]);
+
+  const activeTransactions = activeMonthStart
+    ? expenseData.transactions.filter(transaction => {
+        const transactionDate = getTransactionDate(transaction);
+        const resetDate = new Date(activeMonthStart);
+
+        if (Number.isNaN(transactionDate.getTime()) || Number.isNaN(resetDate.getTime())) {
+          return true;
+        }
+
+        return transactionDate >= resetDate;
+      })
+    : expenseData.transactions;
 
   // Calculate monthly spending from transactions
   const calculateMonthlySpending = () => {
@@ -70,8 +95,8 @@ export const ExpenseProvider = ({ children }) => {
     const currentYear = new Date().getFullYear();
 
     return months.map(month => {
-      const monthTransactions = expenseData.transactions.filter(transaction => {
-        const transactionDate = new Date(transaction.date);
+      const monthTransactions = activeTransactions.filter(transaction => {
+        const transactionDate = getTransactionDate(transaction);
         const transactionMonth = transactionDate.toLocaleString('en-US', { month: 'short' });
         const transactionYear = transactionDate.getFullYear();
         return transactionMonth === month && transactionYear === currentYear && transaction.type === 'expense';
@@ -95,8 +120,8 @@ export const ExpenseProvider = ({ children }) => {
     }
 
     return days.map(date => {
-      const dayTransactions = expenseData.transactions.filter(transaction => {
-        const transactionDate = new Date(transaction.date);
+      const dayTransactions = activeTransactions.filter(transaction => {
+        const transactionDate = getTransactionDate(transaction);
         return transactionDate.toDateString() === date.toDateString() && transaction.type === 'expense';
       });
 
@@ -118,8 +143,8 @@ export const ExpenseProvider = ({ children }) => {
     }
 
     return years.map(year => {
-      const yearTransactions = expenseData.transactions.filter(transaction => {
-        const transactionDate = new Date(transaction.date);
+      const yearTransactions = activeTransactions.filter(transaction => {
+        const transactionDate = getTransactionDate(transaction);
         return transactionDate.getFullYear() === year && transaction.type === 'expense';
       });
 
@@ -138,7 +163,7 @@ export const ExpenseProvider = ({ children }) => {
     });
 
     // Sum up expenses by category
-    expenseData.transactions
+    activeTransactions
       .filter(t => t.type === 'expense')
       .forEach(transaction => {
         // Map transaction categories to our category IDs
@@ -170,11 +195,11 @@ export const ExpenseProvider = ({ children }) => {
 
   // Calculate summary values
   const calculateSummary = () => {
-    const totalIncome = expenseData.transactions
+    const totalIncome = activeTransactions
       .filter(t => t.type === 'income')
       .reduce((sum, t) => sum + Math.abs(t.amount), 0);
 
-    const totalExpenses = expenseData.transactions
+    const totalExpenses = activeTransactions
       .filter(t => t.type === 'expense')
       .reduce((sum, t) => sum + Math.abs(t.amount), 0);
 
@@ -194,9 +219,7 @@ export const ExpenseProvider = ({ children }) => {
         amount: Math.abs(transactionData.amount), // API expects positive amount
         category: transactionData.category,
         description: transactionData.name || transactionData.description,
-        date: transactionData.date === 'Today' || transactionData.date === 'Yesterday'
-          ? new Date().toISOString()
-          : new Date(transactionData.date).toISOString()
+        date: getTransactionTimestamp(transactionData)
       };
 
       // Save to API
@@ -218,6 +241,24 @@ export const ExpenseProvider = ({ children }) => {
       return { success: false, error: error.message };
     }
   };
+
+  function getTransactionTimestamp(transactionData) {
+    if (transactionData.dateISO) {
+      return transactionData.dateISO;
+    }
+
+    if (transactionData.rawDate) {
+      const todayInputValue = getDateInputValue(new Date());
+
+      return transactionData.rawDate === todayInputValue
+        ? new Date().toISOString()
+        : new Date(transactionData.rawDate).toISOString();
+    }
+
+    return transactionData.date === 'Today' || transactionData.date === 'Yesterday'
+      ? new Date().toISOString()
+      : new Date(transactionData.date).toISOString();
+  }
 
   // Delete a transaction by ID
   const deleteTransaction = async (transactionId) => {
@@ -243,17 +284,18 @@ export const ExpenseProvider = ({ children }) => {
     }
   };
 
-  // Reset all data (for demo purposes - in real app might want to clear from API too)
-  const resetAllData = () => {
-    setExpenseData({
-      categories: defaultCategories.map(cat => ({ ...cat, amount: 0, progress: 0 })),
-      transactions: []
-    });
+  const resetCurrentMonth = () => {
+    const nextActiveMonthStart = new Date().toISOString();
+
+    localStorage.setItem(getActiveMonthStorageKey(), nextActiveMonthStart);
+    setActiveMonthStart(nextActiveMonthStart);
   };
 
   const value = {
     expenseData: {
       ...expenseData,
+      allTransactions: expenseData.transactions,
+      transactions: activeTransactions,
       monthlySpending: calculateMonthlySpending(),
       dailySpending: calculateDailySpending(),
       yearlySpending: calculateYearlySpending(),
@@ -262,7 +304,7 @@ export const ExpenseProvider = ({ children }) => {
     summary: calculateSummary(),
     loading,
     error,
-    resetAllData,
+    resetCurrentMonth,
     addTransaction,
     deleteTransaction,
     fetchExpenses

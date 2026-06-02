@@ -15,7 +15,9 @@ function Home() {
   const modalRef = useRef();
   const { expenseData, loading } = useExpense();
   const { initializing } = useAuth();
-  const hasTransactions = expenseData.transactions && expenseData.transactions.length > 0;
+  const hasTransactions = expenseData.allTransactions
+    ? expenseData.allTransactions.length > 0
+    : expenseData.transactions && expenseData.transactions.length > 0;
   const isLoading = initializing || loading;
 
   const handleAddTransaction = () => {
