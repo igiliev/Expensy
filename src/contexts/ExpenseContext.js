@@ -25,6 +25,11 @@ const getTransactionDate = (transaction) => new Date(transaction.dateISO || tran
 
 const getDateInputValue = (date) => date.toISOString().split('T')[0];
 
+const getCurrentMonthStart = () => {
+  const today = new Date();
+  return new Date(today.getFullYear(), today.getMonth(), 1);
+};
+
 export const ExpenseProvider = ({ children }) => {
   const { apiRequest, isAuthenticated, user } = useAuth();
   const [expenseData, setExpenseData] = useState({
@@ -76,8 +81,30 @@ export const ExpenseProvider = ({ children }) => {
     }
   }, [isAuthenticated, fetchExpenses, getActiveMonthStorageKey]);
 
+  const currentMonthStart = getCurrentMonthStart();
+
+  const currentMonthTransactions = expenseData.transactions.filter(transaction => {
+    const transactionDate = getTransactionDate(transaction);
+
+    if (Number.isNaN(transactionDate.getTime())) {
+      return true;
+    }
+
+    return transactionDate >= currentMonthStart;
+  });
+
+  const historyTransactions = expenseData.transactions.filter(transaction => {
+    const transactionDate = getTransactionDate(transaction);
+
+    if (Number.isNaN(transactionDate.getTime())) {
+      return false;
+    }
+
+    return transactionDate < currentMonthStart;
+  });
+
   const activeTransactions = activeMonthStart
-    ? expenseData.transactions.filter(transaction => {
+    ? currentMonthTransactions.filter(transaction => {
         const transactionDate = getTransactionDate(transaction);
         const resetDate = new Date(activeMonthStart);
 
@@ -87,7 +114,7 @@ export const ExpenseProvider = ({ children }) => {
 
         return transactionDate >= resetDate;
       })
-    : expenseData.transactions;
+    : currentMonthTransactions;
 
   // Calculate monthly spending from transactions
   const calculateMonthlySpending = () => {
@@ -296,6 +323,8 @@ export const ExpenseProvider = ({ children }) => {
       ...expenseData,
       allTransactions: expenseData.transactions,
       transactions: activeTransactions,
+      currentMonthTransactions,
+      historyTransactions,
       monthlySpending: calculateMonthlySpending(),
       dailySpending: calculateDailySpending(),
       yearlySpending: calculateYearlySpending(),

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ExpenseProvider } from './contexts/ExpenseContext';
 import Home from './pages/Home/Home';
+import History from './pages/History/History';
 import Auth from './components/Login/Auth';
 import './App.css';
 
@@ -26,6 +27,7 @@ function AppContent() {
         <div className="App">
           <Routes>
             <Route path="/" element={isAuthenticated ? <Home /> : <Auth />} />
+            <Route path="/history" element={isAuthenticated ? <History /> : <Auth />} />
           </Routes>
         </div>
       </Router>

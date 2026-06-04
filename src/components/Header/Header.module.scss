@@ -41,7 +41,7 @@
 
 .navActions {
   display: flex;
-  gap: $spacing-xl;
+  gap: $spacing-md;
   align-items: center;
 
   @media (max-width: 640px) {
@@ -49,6 +49,35 @@
     width: auto;
     justify-content: flex-end;
     gap: 8px;
+  }
+}
+
+.navLink {
+  min-height: 40px;
+  padding: 0 $spacing-smd;
+  border-radius: $radius-sm;
+  color: $text-secondary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-sm;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: $text-primary;
+    background: rgba($primary-cyan, 0.08);
+  }
+
+  &.active {
+    color: $text-dark;
+    background: $primary-cyan;
+  }
+
+  @media (max-width: 640px) {
+    min-height: 38px;
+    padding: 0 8px;
   }
 }
 

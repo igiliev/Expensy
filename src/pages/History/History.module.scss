@@ -1,0 +1,16 @@
+@import '../../styles/variables.scss';
+
+.pageTitle {
+  margin-bottom: $spacing-lg;
+}
+
+.pageTitleHeading {
+  font-size: $font-5xl;
+  font-weight: 700;
+}
+
+.pageTitleSubtitle {
+  color: $text-secondary;
+  margin-top: $spacing-sm;
+  font-size: $font-lg;
+}

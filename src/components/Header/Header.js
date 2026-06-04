@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useExpense } from '../../contexts/ExpenseContext';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
@@ -34,6 +35,18 @@ function Header({ onAddTransaction }) {
         <div className={styles.navActions}>
           {user && (
             <>
+              <NavLink
+                to="/"
+                className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ''}`}
+              >
+                Dashboard
+              </NavLink>
+              <NavLink
+                to="/history"
+                className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ''}`}
+              >
+                History
+              </NavLink>
               <button
                 onClick={handleResetMonth}
                 className={styles.resetMonthButton}
