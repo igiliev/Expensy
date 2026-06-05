@@ -62,7 +62,7 @@ function Home() {
           {/* Categories and Transactions Side-by-Side */}
           <div className={styles.categoriesTransactionsRow}>
             <Categories />
-            <RecentTransactions />
+            <RecentTransactions scrollAfterItems={8} />
           </div>
         </div>
       )}

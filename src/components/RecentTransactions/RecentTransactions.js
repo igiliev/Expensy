@@ -2,17 +2,24 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useExpense } from '../../contexts/ExpenseContext';
 import styles from './RecentTransactions.module.scss';
 
+const TRANSACTION_ITEM_HEIGHT = 80;
+const TRANSACTION_LIST_GAP = 12;
+
 function RecentTransactions({
   title = 'Recent Transactions',
   transactions,
   emptyTitle = 'No transactions yet',
   emptySubtitle = 'Add your first transaction to get started',
   paginate = false,
-  pageSize = 10
+  pageSize = 10,
+  scrollAfterItems
 }) {
   const { expenseData, deleteTransaction } = useExpense();
   const transactionsToRender = transactions || expenseData.transactions;
   const [currentPage, setCurrentPage] = useState(1);
+  const shouldLimitScroll = !paginate
+    && scrollAfterItems
+    && transactionsToRender.length > scrollAfterItems;
 
   const totalPages = paginate
     ? Math.max(1, Math.ceil(transactionsToRender.length / pageSize))
@@ -60,6 +67,11 @@ function RecentTransactions({
     ? 0
     : (currentPage - 1) * pageSize + 1;
   const pageEnd = Math.min(currentPage * pageSize, transactionsToRender.length);
+  const transactionListStyle = shouldLimitScroll
+    ? {
+        maxHeight: `${(scrollAfterItems * TRANSACTION_ITEM_HEIGHT) + ((scrollAfterItems - 1) * TRANSACTION_LIST_GAP)}px`
+      }
+    : undefined;
 
   const handleDeleteTransaction = async (transactionId) => {
     if (window.confirm('Are you sure you want to delete this transaction?')) {
@@ -80,7 +92,10 @@ function RecentTransactions({
           </div>
         )}
       </div>
-      <div className={styles.transactionList}>
+      <div
+        className={`${styles.transactionList} ${shouldLimitScroll ? styles.scrollableList : ''}`}
+        style={transactionListStyle}
+      >
         {transactionsToRender.length > 0 ? (
           visibleTransactions.map(transaction => (
             <div key={transaction.id} className={styles.transactionItem}>

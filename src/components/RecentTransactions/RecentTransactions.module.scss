@@ -45,6 +45,10 @@
   }
 }
 
+.scrollableList {
+  border-bottom: 1px solid $border-color-light;
+}
+
 .transactionItem {
   display: flex;
   align-items: center;
