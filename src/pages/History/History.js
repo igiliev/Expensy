@@ -38,6 +38,8 @@ function History() {
             transactions={expenseData.historyTransactions}
             emptyTitle="No history yet"
             emptySubtitle="Transactions older than the current month will appear here"
+            paginate
+            pageSize={10}
           />
         </div>
       )}

@@ -1,5 +1,24 @@
 @import '../../styles/variables.scss';
 
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+
+  :global(.section-title) {
+    margin-bottom: 0;
+  }
+}
+
+.pageSummary {
+  color: $text-secondary;
+  font-size: $font-sm;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .transactionList {
   display: flex;
   flex-direction: column;
@@ -130,5 +149,84 @@
 .transactionDeleteBtnIcon {
   position: relative;
   top: 1px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+}
+
+.paginationPages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  flex-wrap: wrap;
+}
+
+.paginationButton,
+.paginationPage {
+  border: 1px solid rgba(139, 147, 168, 0.24);
+  background: $background-card;
+  color: $text-primary;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    background: $background-card-hover;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    color: $text-secondary;
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+}
+
+.paginationButton {
+  min-width: 96px;
+  height: 40px;
+  border-radius: $radius-sm;
+  padding: 0 $spacing-md;
+}
+
+.paginationPage {
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-sm;
+
+  &.active {
+    background: $primary-cyan;
+    border-color: $primary-cyan;
+    color: white;
+  }
+}
+
+.paginationEllipsis {
+  color: $text-secondary;
+  font-weight: 700;
+  min-width: 24px;
+  text-align: center;
+}
+
+@media screen and (max-width: 640px) {
+  .sectionHeader,
+  .pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pageSummary {
+    white-space: normal;
+  }
+
+  .paginationButton {
+    width: 100%;
+  }
 }
 
