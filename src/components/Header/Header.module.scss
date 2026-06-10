@@ -28,12 +28,8 @@
 }
 
 .navLogo {
-  height: 42px;
+  height: 50px;
   width: auto;
-
-  @media (max-width: 768px) {
-    height: 34px;
-  }
 }
 
 .navActions {
@@ -155,10 +151,34 @@
   }
 
   @media (max-width: 768px) {
-    width: 100%;
-    min-height: 44px;
+    display: none;
+  }
+}
+
+.mobileAddButton {
+  display: none;
+  height: 44px;
+  min-width: 92px;
+  padding: 0 $spacing-md;
+  border: none;
+  border-radius: $radius-md;
+  background: $primary-cyan;
+  color: $text-dark;
+  cursor: pointer;
+  font-size: $font-sm;
+  font-weight: 700;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: #93efff;
+  }
+
+  @media (max-width: 768px) {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    padding: 0 $spacing-md;
+    margin-left: auto;
+    margin-right: 10px;
     white-space: nowrap;
   }
 }
@@ -316,4 +336,3 @@
     transition: none;
   }
 }
-

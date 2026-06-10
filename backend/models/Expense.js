@@ -41,6 +41,7 @@ const expenseSchema = new mongoose.Schema({
         'Entertainment': '🎬',
         'Food': '🍔',
         'Transport': '🚗',
+        'Slava': '👩',
         'Salary': '💰',
         'Other': '💵'
       };

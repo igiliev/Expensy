@@ -17,7 +17,8 @@ const AddTransactionModal = forwardRef((props, ref) => {
     { id: 'house', icon: '🏠', name: 'House' },
     { id: 'entertainment', icon: '🎬', name: 'Entertainment' },
     { id: 'food', icon: '🍔', name: 'Food' },
-    { id: 'transport', icon: '🚗', name: 'Transport' }
+    { id: 'transport', icon: '🚗', name: 'Transport' },
+    { id: 'slava', icon: '👩', name: 'Slava' }
   ];
 
   const incomeCategories = [

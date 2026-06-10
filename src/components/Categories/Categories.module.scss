@@ -42,7 +42,8 @@
   &.house,
   &.entertainment,
   &.food,
-  &.transport {
+  &.transport,
+  &.slava {
     background: rgba($primary-cyan, 0.1);
     color: $primary-cyan;
   }

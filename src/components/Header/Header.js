@@ -42,6 +42,15 @@ function Header({ onAddTransaction }) {
         </div>
         {user && (
           <button
+            onClick={handleAddTransaction}
+            className={styles.mobileAddButton}
+            title="Add Transaction"
+          >
+            + Add
+          </button>
+        )}
+        {user && (
+          <button
             type="button"
             className={`${styles.mobileMenuToggle} ${isMobileMenuOpen ? styles.mobileMenuToggleOpen : ''}`}
             onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}

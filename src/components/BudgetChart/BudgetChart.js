@@ -15,7 +15,8 @@ function BudgetChart() {
     house: '#FFD700',
     entertainment: '#00D9FF',
     food: '#10B981',
-    transport: '#6366F1'
+    transport: '#6366F1',
+    slava: '#EC4899'
   };
 
   // Calculate category totals for current month
@@ -38,6 +39,7 @@ function BudgetChart() {
         'Entertainment': 'entertainment',
         'Food': 'food',
         'Transport': 'transport',
+        'Slava': 'slava',
         'Utilities': 'bills',
         'Food & Dining': 'food',
         'Transportation': 'transport'

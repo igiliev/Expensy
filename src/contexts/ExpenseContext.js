@@ -18,7 +18,8 @@ const defaultCategories = [
   { id: 'house', name: 'House', icon: '🏠', amount: 0, progress: 0 },
   { id: 'entertainment', name: 'Entertainment', icon: '🎬', amount: 0, progress: 0 },
   { id: 'food', name: 'Food', icon: '🍔', amount: 0, progress: 0 },
-  { id: 'transport', name: 'Transport', icon: '🚗', amount: 0, progress: 0 }
+  { id: 'transport', name: 'Transport', icon: '🚗', amount: 0, progress: 0 },
+  { id: 'slava', name: 'Slava', icon: '👩', amount: 0, progress: 0 }
 ];
 
 const getTransactionDate = (transaction) => new Date(transaction.dateISO || transaction.date);
@@ -201,6 +202,7 @@ export const ExpenseProvider = ({ children }) => {
           'Entertainment': 'entertainment',
           'Food': 'food',
           'Transport': 'transport',
+          'Slava': 'slava',
           'Utilities': 'bills',
           'Food & Dining': 'food',
           'Transportation': 'transport'
