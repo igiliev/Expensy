@@ -1,7 +1,13 @@
 // Color Variables
+$white: #FFFFFF;
+
 $primary-cyan: #00D9FF;
 $primary-cyan-dark: #0099CC;
 $primary-cyan-hover: #00B8D4;
+
+$button-blue-bg: $primary-cyan;
+$button-blue-hover-bg: #93efff;
+$button-blue-gradient-bg: linear-gradient(135deg, $primary-cyan, $primary-cyan-dark);
 
 $background-dark: #08090e;
 $background-section: #141726;
@@ -12,7 +18,7 @@ $background-modal: rgba(26, 31, 46, 0.95);
 $background-input: rgba(26, 31, 46, 0.4);
 $background-input-focus: rgba(26, 31, 46, 0.6);
 
-$text-primary: #FFFFFF;
+$text-primary: $white;
 $text-secondary: #8B93A8;
 $text-dark: #0F1419;
 
@@ -66,4 +72,49 @@ $shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
 $z-nav: 100;
 $z-modal: 1000;
 $z-modal-header: 10;
+
+@mixin button-blue-surface($background: $button-blue-bg) {
+  background: $background;
+  color: $text-dark;
+}
+
+@mixin button-blue(
+  $background: $button-blue-bg,
+  $hover-background: null,
+  $hover-transform: translateY(-2px),
+  $hover-shadow: $shadow-md,
+  $active-transform: translateY(0)
+) {
+  @include button-blue-surface($background);
+  border: none;
+  border-radius: $radius-lg;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    @if $hover-background != null {
+      background: $hover-background;
+    }
+
+    @if $hover-transform != null {
+      transform: $hover-transform;
+    }
+
+    @if $hover-shadow != null {
+      box-shadow: $hover-shadow;
+    }
+  }
+
+  &:active {
+    @if $active-transform != null {
+      transform: $active-transform;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
 

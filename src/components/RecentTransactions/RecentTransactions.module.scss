@@ -205,7 +205,7 @@
   border-radius: $radius-sm;
 
   &.active {
-    background: $primary-cyan;
+    @include button-blue-surface;
     border-color: $primary-cyan;
     color: white;
   }

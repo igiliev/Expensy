@@ -257,15 +257,9 @@
 }
 
 .btnModalSubmit {
-  background: linear-gradient(135deg, $primary-cyan, $primary-cyan-dark);
-  color: $text-dark;
+  @include button-blue($background: $button-blue-gradient-bg);
   padding: $spacing-md $spacing-lg;
   font-size: 15px;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: $shadow-md;
-  }
 }
 
 @media (max-width: 640px) {

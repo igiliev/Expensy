@@ -73,17 +73,11 @@
 }
 
 .confirmButton {
-  border: none;
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: $shadow-md;
-  }
+  @include button-blue($background: transparent, $hover-transform: translateY(-1px));
 }
 
 .primary {
-  background: linear-gradient(135deg, $primary-cyan, $primary-cyan-dark);
-  color: $text-dark;
+  background: $button-blue-gradient-bg;
 }
 
 .danger {

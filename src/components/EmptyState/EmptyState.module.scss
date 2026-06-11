@@ -49,30 +49,22 @@
 }
 
 .emptyBtnCta {
-  background: linear-gradient(135deg, $primary-cyan, $primary-cyan-dark);
+  @include button-blue(
+    $background: $button-blue-gradient-bg,
+    $hover-transform: translateY(-4px),
+    $hover-shadow: 0 12px 32px rgba($primary-cyan, 0.3),
+    $active-transform: translateY(-2px)
+  );
   background-size: 200% 200%;
-  color: $text-dark;
   padding: 18px $spacing-3xl;
-  border: none;
-  border-radius: $radius-md;
   font-weight: 700;
   font-size: $font-base;
-  cursor: pointer;
   transition: all $transition-base;
   display: inline-flex;
   align-items: center;
   gap: 12px;
   box-shadow: $shadow-md;
   animation: gradientShift 3s ease infinite;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba($primary-cyan, 0.3);
-  }
-
-  &:active {
-    transform: translateY(-2px);
-  }
 }
 
 @keyframes gradientShift {

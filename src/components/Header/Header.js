@@ -71,46 +71,62 @@ function Header({ onAddTransaction }) {
         >
           {user && (
             <>
-              <NavLink
-                to="/"
-                className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ''}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Dashboard
-              </NavLink>
-              <NavLink
-                to="/history"
-                className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ''}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                History
-              </NavLink>
-              <button
-                onClick={handleResetMonth}
-                className={styles.resetMonthButton}
-                title="Reset month"
-              >
-                <span className={styles.desktopButtonLabel}>Reset month</span>
-                <span className={styles.mobileButtonLabel}>Reset</span>
-              </button>
-              <button
-                onClick={handleAddTransaction}
-                className={styles.transactionButton}
-                title="Add Transaction"
-              >
-                <span className={styles.desktopButtonLabel}>+ Add Transaction</span>
-                <span className={styles.mobileButtonLabel}>+ Add</span>
-              </button>
-              <span className={styles.welcomeText}>
-                Welcome, {user.email}
-              </span>
-              <button
-                onClick={handleLogout}
-                className={styles.logoutButton}
-                title="Logout"
-              >
-                Logout
-              </button>
+              <div className={styles.innerWrapper}>
+                <NavLink
+                  to="/"
+                  className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ''}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Dashboard
+                </NavLink>
+                <NavLink
+                  to="/history"
+                  className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ''}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  History
+                </NavLink>
+              </div>
+
+              <div className={styles.navRightWrapper}>
+                <span className={styles.welcomeText}>
+                  Welcome, {user.email}
+                </span>
+                <button
+                  onClick={handleResetMonth}
+                  className={styles.resetMonthButton}
+                  title="Reset month"
+                >
+                  <span className={styles.desktopButtonLabel}>Reset month</span>
+                  <span className={styles.mobileButtonLabel}>Reset</span>
+                </button>
+                <button
+                  onClick={handleAddTransaction}
+                  className={styles.transactionButton}
+                  title="Add Transaction"
+                >
+                  <span className={styles.desktopButtonLabel}>+ Add Transaction</span>
+                  <span className={styles.mobileButtonLabel}>+ Add</span>
+                </button>
+                <span className={styles.navDivider} aria-hidden="true" />
+                <button
+                  onClick={handleLogout}
+                  className={styles.logoutButton}
+                  title="Logout"
+                >
+                  <svg
+                    className={styles.logoutIcon}
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <path d="M16 17l5-5-5-5" />
+                    <path d="M21 12H9" />
+                  </svg>
+                  Logout
+                </button>
+              </div>
             </>
           )}
         </div>

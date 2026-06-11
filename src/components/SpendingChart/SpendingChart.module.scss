@@ -39,8 +39,7 @@
   font-size: $font-sm;
 
   &.active {
-    background: $primary-cyan;
-    color: $text-dark;
+    @include button-blue-surface;
     font-weight: 600;
   }
 
@@ -135,4 +134,3 @@
     font-size: $font-xs;
   }
 }
-

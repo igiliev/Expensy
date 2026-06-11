@@ -1,18 +1,19 @@
 @import '../../styles/variables.scss';
 
 .navbar {
-  background: $background-nav;
+  background: #071126;
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid $border-color;
-  padding: 0 $spacing-xl;
+  border-bottom: 1px solid rgba($primary-cyan, 0.08);
+  padding: 0 clamp($spacing-lg, 4vw, 72px);
   height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: clamp($spacing-lg, 3vw, $spacing-4xl);
   position: sticky;
   top: 0;
   z-index: $z-nav;
-  box-shadow: $shadow-sm;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
 
   @media (max-width: 768px) {
     height: 72px;
@@ -21,21 +22,27 @@
 }
 
 .navBrand {
-  font-size: $font-2xl;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  padding-top: 5px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
 }
 
 .navLogo {
-  height: 50px;
+  height: 72px;
   width: auto;
+
+  @media (max-width: 768px) {
+    height: 50px;
+  }
 }
 
 .navActions {
   display: flex;
-  gap: $spacing-md;
+  flex: 1;
+  gap: clamp($spacing-lg, 3vw, 56px);
   align-items: center;
+  justify-content: space-between;
+  min-width: 0;
 
   @media (max-width: 768px) {
     position: absolute;
@@ -74,55 +81,71 @@
     pointer-events: auto;
   }
 }
-
-.navLink {
-  min-height: 40px;
-  padding: 0 $spacing-smd;
-  border-radius: $radius-sm;
-  color: $text-secondary;
+.innerWrapper {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: $font-sm;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all $transition-fast;
+  gap: 20px;
 
-  &:hover {
-    color: $text-primary;
-    background: rgba($primary-cyan, 0.08);
-  }
-
-  &.active {
-    color: $text-dark;
-    background: $primary-cyan;
-  }
-
-  @media (max-width: 768px) {
+  .navLink {
     min-height: 44px;
-    width: 100%;
-    justify-content: flex-start;
-    padding: 0 $spacing-md;
+    padding: 0 0 6px;
+    color: rgba($text-primary, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-base;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    transition:
+      color $transition-fast,
+      border-color $transition-fast;
+  
+    &:hover {
+      color: $text-primary;
+    }
+  
+    &.active {
+      color: $primary-cyan;
+      border-bottom-color: $primary-cyan;
+      background: transparent;
+      box-shadow: none;
+    }
+  
+    @media (max-width: 768px) {
+      min-height: 44px;
+      width: 100%;
+      justify-content: flex-start;
+      padding: 0 $spacing-md;
+      border-bottom: 0;
+      border-radius: $radius-lg;
+  
+      &.active {
+        @include button-blue($hover-transform: null, $hover-shadow: null, $active-transform: null);
+      }
+    }
   }
 }
 
 .logoutButton {
-  min-width: 80px;
-  height: 40px;
-  padding: 0 $spacing-smd;
-  border-radius: $radius-sm;
-  background: rgba(35, 43, 60, 0.5);
+  min-width: 112px;
+  height: 44px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
   display: flex;
   align-items: center;
+  gap: $spacing-sm;
   justify-content: center;
   cursor: pointer;
-  font-size: $font-sm;
-  font-weight: 600;
-  color: $text-primary;
+  font-size: $font-base;
+  font-weight: 800;
+  color: rgba($text-primary, 0.72);
   border: none;
+  transition: color $transition-fast;
 
   &:hover {
-    background: rgba($primary-cyan, 0.1);
+    color: $text-primary;
   }
 
   @media (max-width: 768px) {
@@ -130,25 +153,33 @@
     min-height: 44px;
     justify-content: flex-start;
     padding: 0 $spacing-md;
+    border-radius: $radius-lg;
+    background: rgba(35, 43, 60, 0.5);
+
+    &:hover {
+      background: rgba($primary-cyan, 0.1);
+    }
   }
 }
 
+.logoutIcon {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.4;
+  flex: 0 0 auto;
+}
+
 .transactionButton {
-  background: $primary-cyan;
-  color: $text-dark;
-  padding: $spacing-smd $spacing-md;
-  border-radius: $radius-md;
+  @include button-blue($hover-background: $button-blue-hover-bg, $hover-transform: null, $hover-shadow: null);
+  padding: $spacing-smd $spacing-lg;
   font-size: $font-sm;
   font-weight: 600;
-  cursor: pointer;
-  transition: all $transition-fast;
   display: flex;
   align-items: center;
-  border: none;
-
-  &:hover {
-    background: #93efff;
-  }
 
   @media (max-width: 768px) {
     display: none;
@@ -160,18 +191,9 @@
   height: 44px;
   min-width: 92px;
   padding: 0 $spacing-md;
-  border: none;
-  border-radius: $radius-md;
-  background: $primary-cyan;
-  color: $text-dark;
-  cursor: pointer;
+  @include button-blue($hover-background: $button-blue-hover-bg, $hover-transform: null, $hover-shadow: null);
   font-size: $font-sm;
   font-weight: 700;
-  transition: all $transition-fast;
-
-  &:hover {
-    background: #93efff;
-  }
 
   @media (max-width: 768px) {
     display: inline-flex;
@@ -186,8 +208,8 @@
 .resetMonthButton {
   background: #f3f4f6;
   color: #111827;
-  padding: $spacing-smd $spacing-md;
-  border-radius: $radius-md;
+  padding: $spacing-smd $spacing-lg;
+  border-radius: $radius-lg;
   font-size: $font-sm;
   font-weight: 600;
   cursor: pointer;
@@ -221,6 +243,12 @@
   .mobileButtonLabel {
     display: inline;
   }
+}
+
+.navRightWrapper {
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
 
 .welcomeText {
