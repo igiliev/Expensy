@@ -103,7 +103,7 @@ function NetWorth() {
           <div className={`${styles.metricValue} ${styles.incomeValue}`}>
             {formatCurrency(totals.currentMonthIncome)}
           </div>
-          <div className={`${styles.metricChange} ${incomeChange >= 0 ? styles.positive : styles.negative}`}>
+          <div className={`${styles.metricChange} ${styles.incomeTrend}`}>
             <TrendingUp aria-hidden="true" focusable="false" />
             {formatPercentChange(incomeChange)} vs last month
           </div>
@@ -119,7 +119,7 @@ function NetWorth() {
           <div className={`${styles.metricValue} ${styles.expenseValue}`}>
             {formatCurrency(totals.currentMonthExpenses)}
           </div>
-          <div className={`${styles.metricChange} ${expenseChange <= 0 ? styles.positive : styles.negative}`}>
+          <div className={`${styles.metricChange} ${styles.expenseTrend}`}>
             <TrendingDown aria-hidden="true" focusable="false" />
             {formatPercentChange(expenseChange)} vs last month
           </div>
