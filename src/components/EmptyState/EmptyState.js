@@ -1,4 +1,5 @@
 import React from 'react';
+import { Coins, Plus } from 'lucide-react';
 import styles from './EmptyState.module.scss';
 
 function EmptyState({ onAddTransaction }) {
@@ -6,7 +7,9 @@ function EmptyState({ onAddTransaction }) {
     <div className={styles.emptyStateContainer}>
       {/* Hero Section */}
       <div className={styles.emptyHero}>
-        <div className={styles.emptyHeroIcon}>💰</div>
+        <div className={styles.emptyHeroIcon}>
+          <Coins aria-hidden="true" focusable="false" />
+        </div>
         <h1 className={styles.emptyHeroTitle}>
           Track Your <span>Spending</span> Effortlessly
         </h1>
@@ -14,7 +17,7 @@ function EmptyState({ onAddTransaction }) {
           Take control of your finances. Log expenses, set budgets, and watch your money grow smarter.
         </p>
         <button className={styles.emptyBtnCta} onClick={onAddTransaction}>
-          <span>➕</span> Add Your First Transaction
+          <Plus aria-hidden="true" focusable="false" /> Add Your First Transaction
         </button>
       </div>
 

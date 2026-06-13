@@ -1,5 +1,6 @@
 import React from 'react';
 import { useExpense } from '../../contexts/ExpenseContext';
+import { renderCategoryIcon } from '../../utils/categoryIcons';
 import styles from './Categories.module.scss';
 
 function Categories() {
@@ -13,7 +14,7 @@ function Categories() {
           <div key={category.id} className={styles.categoryCard}>
             <div className={styles.categoryHeader}>
               <div className={`${styles.categoryIcon} ${styles[category.id]}`}>
-                {category.icon}
+                {renderCategoryIcon(category.name, category.id)}
               </div>
               <div className={styles.categoryName}>{category.name}</div>
               <div className={styles.categoryAmount}>{category.amount.toLocaleString()}€</div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useExpense } from '../../contexts/ExpenseContext';
+import { renderCategoryIcon } from '../../utils/categoryIcons';
 import styles from './RecentTransactions.module.scss';
 
 const TRANSACTION_ITEM_HEIGHT = 80;
@@ -100,7 +101,7 @@ function RecentTransactions({
           visibleTransactions.map(transaction => (
             <div key={transaction.id} className={styles.transactionItem}>
               <div className={styles.transactionIcon} style={{background: transaction.iconBg}}>
-                {transaction.icon}
+                {renderCategoryIcon(transaction.category)}
               </div>
               <div className={styles.transactionDetails}>
                 <span>{transaction.name}</span>

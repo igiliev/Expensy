@@ -15,7 +15,7 @@
   z-index: $z-nav;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     height: 72px;
     padding: 8px $spacing-smd;
   }
@@ -28,12 +28,8 @@
 }
 
 .navLogo {
-  height: 72px;
+  height: 50px;
   width: auto;
-
-  @media (max-width: 768px) {
-    height: 50px;
-  }
 }
 
 .navActions {
@@ -44,7 +40,7 @@
   justify-content: space-between;
   min-width: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     position: absolute;
     top: calc(100% + 1px);
     left: 0;
@@ -71,7 +67,7 @@
 }
 
 .navActionsOpen {
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     max-height: 430px;
     padding: $spacing-smd;
     border-bottom-color: $border-color-light;
@@ -112,7 +108,7 @@
       box-shadow: none;
     }
   
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       min-height: 44px;
       width: 100%;
       justify-content: flex-start;
@@ -148,7 +144,7 @@
     color: $text-primary;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     width: 100%;
     min-height: 44px;
     justify-content: flex-start;
@@ -181,7 +177,7 @@
   display: flex;
   align-items: center;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     display: none;
   }
 }
@@ -195,7 +191,7 @@
   font-size: $font-sm;
   font-weight: 700;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -222,7 +218,7 @@
     background: #e5e7eb;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     width: 100%;
     min-height: 44px;
     justify-content: center;
@@ -235,7 +231,7 @@
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .desktopButtonLabel {
     display: none;
   }
@@ -255,7 +251,7 @@
   font-size: $font-sm;
   color: #e5e7eb;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     overflow: hidden;
     color: $text-secondary;
     font-size: $font-xs;
@@ -289,7 +285,7 @@
     outline-offset: 3px;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     display: grid;
   }
 }

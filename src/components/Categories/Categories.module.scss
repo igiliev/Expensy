@@ -37,6 +37,11 @@
   background: rgba($primary-cyan, 0.1);
   color: $primary-cyan;
 
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
   &.bills,
   &.baby,
   &.house,

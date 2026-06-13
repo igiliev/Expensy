@@ -153,6 +153,11 @@
   justify-content: center;
   gap: $spacing-sm;
 
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
   &:hover {
     border-color: $border-color-medium;
     background: $background-input-focus;
@@ -220,8 +225,14 @@
 }
 
 .categoryIconBtn {
-  font-size: $font-2xl;
+  display: grid;
+  place-items: center;
   margin-bottom: $spacing-xs;
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
 }
 
 .formFooter {

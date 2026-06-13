@@ -12,80 +12,36 @@
 .pageTitleSubtitle {
   color: $text-secondary;
   margin-top: $spacing-sm;
-  font-size: $font-lg;
+  font-size: $font-xl;
 }
 
-.chartSection {
+.overviewSection {
   margin-bottom: $spacing-xl;
 }
 
-.chartsRow {
+.overviewRow {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 2px;
+  gap: $spacing-xl;
   width: 100%;
   max-width: 100%;
   align-items: stretch;
-  overflow: hidden;
 }
 
-.chartItem {
-  min-width: 0; // Prevents grid overflow
+.categoryChart {
+  min-width: 0;
   max-width: 100%;
   overflow: hidden;
   display: grid;
   height: 100%;
-
-  &:first-child {
-    // Spending chart - left border radius
-    .section {
-      border-radius: $radius-lg 0 0 $radius-lg;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      max-width: 100%;
-    }
-  }
-
-  &:last-child {
-    // Budget chart - right border radius
-    .budgetChart {
-      border-radius: 0 $radius-lg $radius-lg 0;
-      height: 100%;
-      min-width: 0;
-      max-width: 100%;
-    }
-  }
 }
 
-.categoriesTransactionsRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: $spacing-xl;
+.recentTransactionsRow {
+  width: 100%;
 }
 
 @media (max-width: 1024px) {
-  .chartsRow {
-    grid-template-columns: 1fr;
-    gap: $spacing-xl;
-  }
-
-  .chartItem {
-    &:first-child {
-      .section {
-        border-radius: $radius-lg;
-      }
-    }
-
-    &:last-child {
-      .budgetChart {
-        border-radius: $radius-lg;
-      }
-    }
-  }
-
-  .categoriesTransactionsRow {
+  .overviewRow {
     grid-template-columns: 1fr;
   }
 }

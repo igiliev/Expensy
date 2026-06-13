@@ -1,0 +1,1 @@
+- Don't touch the size of the logo

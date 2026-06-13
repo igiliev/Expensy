@@ -14,11 +14,3 @@
   margin-top: $spacing-sm;
   font-size: $font-lg;
 }
-
-.spendingOverview {
-  margin-bottom: $spacing-xl;
-
-  :global(.spendingChart) {
-    border-radius: $radius-lg;
-  }
-}

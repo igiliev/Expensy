@@ -82,6 +82,12 @@
   font-size: $font-xl;
   margin-right: $spacing-md;
   flex-shrink: 0;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    color: $primary-cyan;
+  }
 }
 
 .transactionDetails {

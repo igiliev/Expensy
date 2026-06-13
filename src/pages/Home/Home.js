@@ -1,10 +1,8 @@
 import React, { useRef } from 'react';
 import Header from '../../components/Header/Header';
 import RecentTransactions from '../../components/RecentTransactions/RecentTransactions';
-import SpendingChart from '../../components/SpendingChart/SpendingChart';
 import BudgetChart from '../../components/BudgetChart/BudgetChart';
-import SummaryCards from '../../components/SummaryCards/SummaryCards';
-import Categories from '../../components/Categories/Categories';
+import NetWorth from '../../components/NetWorth/NetWorth';
 import AddTransactionModal from '../../components/AddTransactionModal/AddTransactionModal';
 import EmptyState from '../../components/EmptyState/EmptyState';
 import { useExpense } from '../../contexts/ExpenseContext';
@@ -44,24 +42,16 @@ function Home() {
             <p className={styles.pageTitleSubtitle}>Track and manage my expenses efficiently</p>
           </div>
 
-          {/* Financial Vital Signs Bar */}
-          <SummaryCards />
-
-          {/* Chart Section */}
-          <div className={styles.chartSection}>
-            <div className={styles.chartsRow}>
-              <div className={styles.chartItem}>
-                <SpendingChart />
-              </div>
-              <div className={styles.chartItem}>
+          <div className={styles.overviewSection}>
+            <div className={styles.overviewRow}>
+              <NetWorth />
+              <div className={styles.categoryChart}>
                 <BudgetChart />
               </div>
             </div>
           </div>
 
-          {/* Categories and Transactions Side-by-Side */}
-          <div className={styles.categoriesTransactionsRow}>
-            <Categories />
+          <div className={styles.recentTransactionsRow}>
             <RecentTransactions scrollAfterItems={8} />
           </div>
         </div>

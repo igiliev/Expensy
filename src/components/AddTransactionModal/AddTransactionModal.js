@@ -1,5 +1,6 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { useExpense } from '../../contexts/ExpenseContext';
+import { expenseTypeIcon as ExpenseIcon, incomeTypeIcon as IncomeIcon, renderCategoryIcon } from '../../utils/categoryIcons';
 import styles from './AddTransactionModal.module.scss';
 
 const AddTransactionModal = forwardRef((props, ref) => {
@@ -12,18 +13,18 @@ const AddTransactionModal = forwardRef((props, ref) => {
   const descriptionInputRef = React.useRef(null);
 
   const expenseCategories = [
-    { id: 'bills', icon: '📄', name: 'Bills' },
-    { id: 'baby', icon: '👶', name: 'Baby' },
-    { id: 'house', icon: '🏠', name: 'House' },
-    { id: 'entertainment', icon: '🎬', name: 'Entertainment' },
-    { id: 'food', icon: '🍔', name: 'Food' },
-    { id: 'transport', icon: '🚗', name: 'Transport' },
-    { id: 'slava', icon: '👩', name: 'Slava' }
+    { id: 'bills', name: 'Bills' },
+    { id: 'baby', name: 'Baby' },
+    { id: 'house', name: 'House' },
+    { id: 'entertainment', name: 'Entertainment' },
+    { id: 'food', name: 'Food' },
+    { id: 'transport', name: 'Transport' },
+    { id: 'slava', name: 'Slava' }
   ];
 
   const incomeCategories = [
-    { id: 'salary', icon: '💰', name: 'Salary' },
-    { id: 'other-income', icon: '💵', name: 'Other' }
+    { id: 'salary', name: 'Salary' },
+    { id: 'other-income', name: 'Other' }
   ];
 
   // Use different categories based on transaction type
@@ -74,7 +75,6 @@ const AddTransactionModal = forwardRef((props, ref) => {
     // Create transaction object
     const transaction = {
       id: Date.now(), // Simple ID generation
-      icon: category.icon,
       iconBg: transactionType === 'income' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(0, 217, 255, 0.1)',
       name: description,
       category: category.name,
@@ -140,13 +140,13 @@ const AddTransactionModal = forwardRef((props, ref) => {
                   className={`${styles.typeTab} ${transactionType === 'expense' ? styles.active : ''}`}
                   onClick={() => selectType('expense')}
                 >
-                  <span>💰</span> Expense
+                  <ExpenseIcon aria-hidden="true" focusable="false" /> Expense
                 </button>
                 <button
                   className={`${styles.typeTab} ${transactionType === 'income' ? styles.active : ''}`}
                   onClick={() => selectType('income')}
                 >
-                  <span>💵</span> Income
+                  <IncomeIcon aria-hidden="true" focusable="false" /> Income
                 </button>
               </div>
             </div>
@@ -177,7 +177,9 @@ const AddTransactionModal = forwardRef((props, ref) => {
                     className={`${styles.categoryBtn} ${selectedCategory === category.id ? styles.active : ''}`}
                     onClick={() => selectCategory(category.id)}
                   >
-                    <span className={styles.categoryIconBtn}>{category.icon}</span>
+                    <span className={styles.categoryIconBtn}>
+                      {renderCategoryIcon(category.name, category.id)}
+                    </span>
                     <span>{category.name}</span>
                   </button>
                 ))}

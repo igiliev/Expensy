@@ -1,16 +1,15 @@
 import React, { useRef } from 'react';
 import Header from '../../components/Header/Header';
-import RecentTransactions from '../../components/RecentTransactions/RecentTransactions';
 import SpendingChart from '../../components/SpendingChart/SpendingChart';
 import AddTransactionModal from '../../components/AddTransactionModal/AddTransactionModal';
-import { useExpense } from '../../contexts/ExpenseContext';
 import { useAuth } from '../../contexts/AuthContext';
-import styles from './History.module.scss';
+import { useExpense } from '../../contexts/ExpenseContext';
+import styles from './SpendingOverview.module.scss';
 
-function History() {
+function SpendingOverview() {
   const modalRef = useRef();
-  const { expenseData, loading } = useExpense();
   const { initializing } = useAuth();
+  const { loading } = useExpense();
   const isLoading = initializing || loading;
 
   const handleAddTransaction = () => {
@@ -25,27 +24,15 @@ function History() {
       {isLoading ? (
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p className="loading-text">Loading your history...</p>
+          <p className="loading-text">Loading your spending overview...</p>
         </div>
       ) : (
         <div className="container">
           <div className={styles.pageTitle}>
-            <h1 className={styles.pageTitleHeading}>History</h1>
-            <p className={styles.pageTitleSubtitle}>Transactions from previous months</p>
+            <h1 className={styles.pageTitleHeading}>Spending Overview</h1>
+            <p className={styles.pageTitleSubtitle}>Track daily, monthly, and yearly spending trends</p>
           </div>
-
-          <div className={styles.spendingOverview}>
-            <SpendingChart />
-          </div>
-
-          <RecentTransactions
-            title="History"
-            transactions={expenseData.historyTransactions}
-            emptyTitle="No history yet"
-            emptySubtitle="Transactions older than the current month will appear here"
-            paginate
-            pageSize={10}
-          />
+          <SpendingChart />
         </div>
       )}
       <AddTransactionModal ref={modalRef} />
@@ -53,4 +40,4 @@ function History() {
   );
 }
 
-export default History;
+export default SpendingOverview;

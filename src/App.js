@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ExpenseProvider } from './contexts/ExpenseContext';
 import Home from './pages/Home/Home';
 import History from './pages/History/History';
+import SpendingOverview from './pages/SpendingOverview/SpendingOverview';
 import Auth from './components/Login/Auth';
 import './App.css';
 
@@ -28,6 +29,7 @@ function AppContent() {
           <Routes>
             <Route path="/" element={isAuthenticated ? <Home /> : <Auth />} />
             <Route path="/history" element={isAuthenticated ? <History /> : <Auth />} />
+            <Route path="/spending-overview" element={isAuthenticated ? <SpendingOverview /> : <Auth />} />
           </Routes>
         </div>
       </Router>

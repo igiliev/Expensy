@@ -13,13 +13,13 @@ export const useExpense = () => {
 
 // Default categories structure
 const defaultCategories = [
-  { id: 'bills', name: 'Bills', icon: '📄', amount: 0, progress: 0 },
-  { id: 'baby', name: 'Baby', icon: '👶', amount: 0, progress: 0 },
-  { id: 'house', name: 'House', icon: '🏠', amount: 0, progress: 0 },
-  { id: 'entertainment', name: 'Entertainment', icon: '🎬', amount: 0, progress: 0 },
-  { id: 'food', name: 'Food', icon: '🍔', amount: 0, progress: 0 },
-  { id: 'transport', name: 'Transport', icon: '🚗', amount: 0, progress: 0 },
-  { id: 'slava', name: 'Slava', icon: '👩', amount: 0, progress: 0 }
+  { id: 'bills', name: 'Bills', amount: 0, progress: 0 },
+  { id: 'baby', name: 'Baby', amount: 0, progress: 0 },
+  { id: 'house', name: 'House', amount: 0, progress: 0 },
+  { id: 'entertainment', name: 'Entertainment', amount: 0, progress: 0 },
+  { id: 'food', name: 'Food', amount: 0, progress: 0 },
+  { id: 'transport', name: 'Transport', amount: 0, progress: 0 },
+  { id: 'slava', name: 'Slava', amount: 0, progress: 0 }
 ];
 
 const getTransactionDate = (transaction) => new Date(transaction.dateISO || transaction.date);
