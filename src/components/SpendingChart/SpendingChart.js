@@ -129,9 +129,9 @@ function SpendingChart() {
   };
 
   return (
-    <div className={styles.spendingChart}>
-      <div className="section-title">
-        <span>Spending Overview Chart</span>
+    <section className={styles.spendingChart} aria-labelledby="spending-chart-title">
+      <header className="section-title">
+        <h2 id="spending-chart-title">Spending Overview Chart</h2>
         <div className={styles.periodSelector}>
           <button
             className={`${styles.periodBtn} ${selectedPeriod === 'daily' ? styles.active : ''}`}
@@ -152,10 +152,10 @@ function SpendingChart() {
             Yearly
           </button>
         </div>
-      </div>
+      </header>
 
       {/* Chart Card */}
-      <div className={styles.chartCard}>
+      <figure className={styles.chartCard}>
         <div className={styles.chartValue}>{summary.totalExpenses.toLocaleString()}€</div>
         <div className={styles.chartContainer}>
           {hasSpendingData ? (
@@ -170,8 +170,8 @@ function SpendingChart() {
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </figure>
+    </section>
   );
 }
 

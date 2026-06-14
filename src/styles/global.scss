@@ -63,9 +63,14 @@ code {
   min-width: 0;
   box-sizing: border-box;
 
-  > span {
+  > span,
+  > h2 {
     min-width: 0;
     flex-shrink: 1;
+  }
+
+  > h2 {
+    font: inherit;
   }
 
   @media (max-width: 640px) {

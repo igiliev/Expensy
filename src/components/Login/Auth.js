@@ -11,19 +11,19 @@ function Auth() {
   };
 
   return (
-    <div className={styles.authPage}>
+    <main className={styles.authPage}>
       {/* Background Decoration */}
-      <div className={styles.backgroundDecoration}>
+      <div className={styles.backgroundDecoration} aria-hidden="true">
         <div className={`${styles.gradientBlob} ${styles.blob1}`}></div>
         <div className={`${styles.gradientBlob} ${styles.blob2}`}></div>
       </div>
 
       {/* Auth Container */}
-      <div className={styles.authContainer}>
-        <div className={styles.authBox}>
+      <section className={styles.authContainer} aria-labelledby="auth-title">
+        <article className={styles.authBox}>
           {/* Header */}
-          <div className={styles.authHeader}>
-            <h1 className={styles.authTitle}>
+          <header className={styles.authHeader}>
+            <h1 id="auth-title" className={styles.authTitle}>
               {isLogin ? 'Welcome Back' : 'Create Account'}
             </h1>
             <p className={styles.authSubtitle}>
@@ -32,19 +32,23 @@ function Auth() {
                 : 'Sign up to start tracking your expenses'
               }
             </p>
-          </div>
+          </header>
 
           {/* Tab Buttons */}
-          <div className={styles.tabButtons}>
+          <div className={styles.tabButtons} role="tablist" aria-label="Authentication form">
             <button
               className={`${styles.tabBtn} ${isLogin ? styles.active : ''}`}
               onClick={() => switchTab('login')}
+              role="tab"
+              aria-selected={isLogin}
             >
               Sign In
             </button>
             <button
               className={`${styles.tabBtn} ${!isLogin ? styles.active : ''}`}
               onClick={() => switchTab('register')}
+              role="tab"
+              aria-selected={!isLogin}
             >
               Sign Up
             </button>
@@ -56,9 +60,9 @@ function Auth() {
           ) : (
             <Register onSwitchToLogin={() => switchTab('login')} />
           )}
-        </div>
-      </div>
-    </div>
+        </article>
+      </section>
+    </main>
   );
 }
 

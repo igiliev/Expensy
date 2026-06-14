@@ -128,13 +128,13 @@ function BudgetChart() {
   };
 
   return (
-    <div className={styles.budgetChart}>
-      <div className="section-title">
+    <section className={styles.budgetChart} aria-labelledby="category-spending-title">
+      <h2 id="category-spending-title" className="section-title">
         <span>Spending by Category</span>
-      </div>
+      </h2>
 
       {/* Chart Card */}
-      <div className={styles.chartCard}>
+      <figure className={styles.chartCard}>
         <div className={styles.chartContainer}>
           <HighchartsReact
             highcharts={Highcharts}
@@ -142,14 +142,14 @@ function BudgetChart() {
             ref={chartRef}
           />
         </div>
-        <div className={styles.budgetDetails}>
+        <ul className={styles.budgetDetails}>
           {Object.entries(categoryTotals)
             .filter(([_, amount]) => amount > 0)
             .map(([categoryId, amount]) => {
               const category = expenseData.categories.find(cat => cat.id === categoryId);
               const percentage = (amount / summary.totalExpenses * 100).toFixed(1);
               return (
-                <div key={categoryId} className={styles.budgetDetailItem}>
+                <li key={categoryId} className={styles.budgetDetailItem}>
                   <div className={styles.categoryLegend}>
                     <div
                       className={styles.colorDot}
@@ -161,12 +161,12 @@ function BudgetChart() {
                     <span className={styles.budgetDetailValue}>{amount.toLocaleString()}€ - </span>
                     <span className={styles.percentageLabel}>{percentage}%</span>
                   </div>
-                </div>
+                </li>
               );
             })}
-        </div>
-      </div>
-    </div>
+        </ul>
+      </figure>
+    </section>
   );
 }
 

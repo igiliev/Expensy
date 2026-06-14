@@ -115,6 +115,9 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: $spacing-lg;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .emptyStep {

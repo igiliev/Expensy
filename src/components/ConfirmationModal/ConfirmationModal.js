@@ -34,31 +34,29 @@ function ConfirmationModal({
   }
 
   return (
-    <div className={styles.modalOverlay} onMouseDown={onCancel}>
-      <div
+    <dialog className={styles.modalOverlay} open aria-modal="true" onMouseDown={onCancel}>
+      <article
         className={styles.modalContent}
-        role="dialog"
-        aria-modal="true"
         aria-labelledby="confirmation-modal-title"
         onMouseDown={(event) => event.stopPropagation()}
       >
         <div className={styles.accentLine} />
-        <div className={styles.modalBody}>
+        <section className={styles.modalBody}>
           <h2 id="confirmation-modal-title" className={styles.modalTitle}>
             {title}
           </h2>
           <p className={styles.modalMessage}>{message}</p>
-        </div>
-        <div className={styles.modalActions}>
+        </section>
+        <footer className={styles.modalActions}>
           <button className={styles.cancelButton} onClick={onCancel}>
             {cancelLabel}
           </button>
           <button className={`${styles.confirmButton} ${styles[variant]}`} onClick={onConfirm}>
             {confirmLabel}
           </button>
-        </div>
-      </div>
-    </div>
+        </footer>
+      </article>
+    </dialog>
   );
 }
 

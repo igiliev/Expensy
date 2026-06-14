@@ -48,8 +48,9 @@ function Register({ onSwitchToLogin }) {
     <form onSubmit={handleSubmit}>
       {/* Email Input */}
       <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Email Address</label>
+        <label className={styles.formLabel} htmlFor="register-email">Email Address</label>
         <input
+          id="register-email"
           type="email"
           name="email"
           className={styles.formInput}
@@ -63,9 +64,10 @@ function Register({ onSwitchToLogin }) {
 
       {/* Password Input */}
       <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Password</label>
+        <label className={styles.formLabel} htmlFor="register-password">Password</label>
         <div className={styles.passwordInputGroup}>
           <input
+            id="register-password"
             type={showPassword ? 'text' : 'password'}
             name="password"
             className={`${styles.formInput} ${styles.passwordInput}`}
@@ -92,9 +94,10 @@ function Register({ onSwitchToLogin }) {
 
       {/* Confirm Password Input */}
       <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Confirm Password</label>
+        <label className={styles.formLabel} htmlFor="register-confirm-password">Confirm Password</label>
         <div className={styles.passwordInputGroup}>
           <input
+            id="register-confirm-password"
             type={showConfirmPassword ? 'text' : 'password'}
             name="confirmPassword"
             className={`${styles.formInput} ${styles.passwordInput}`}
@@ -142,7 +145,7 @@ function Register({ onSwitchToLogin }) {
       <div className={styles.authFooter}>
         <span className={styles.authFooterText}>
           Already have an account?
-          <button className={styles.authFooterLink} onClick={onSwitchToLogin}>Sign in</button>
+          <button type="button" className={styles.authFooterLink} onClick={onSwitchToLogin}>Sign in</button>
         </span>
       </div>
     </form>

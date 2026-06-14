@@ -1,1 +1,12 @@
 - Don't touch the size of the logo
+# Native HTML elements to keep in mind and use as much as possible
+- <details> → Creates an accordion/dropdown
+- <dialog> → Creates native modals/popups
+- required → Native form validation
+- loading="lazy" → Lazy loads images
+- <video> → Native video support
+- <audio> → Native audio support
+-  <section> element defines a section in a document.
+- <article> element specifies independent, self-contained content.
+- <aside> element defines some content aside from the content it is placed in (like a sidebar).
+- <figure> tag specifies self-contained content, like illustrations, diagrams, photos, code listings, etc.

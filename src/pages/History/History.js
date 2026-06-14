@@ -20,23 +20,23 @@ function History() {
   };
 
   return (
-    <div>
+    <>
       <Header onAddTransaction={handleAddTransaction} />
       {isLoading ? (
-        <div className="loading-container">
+        <main className="loading-container">
           <div className="loading-spinner"></div>
           <p className="loading-text">Loading your history...</p>
-        </div>
+        </main>
       ) : (
-        <div className="container">
-          <div className={styles.pageTitle}>
+        <main className="container">
+          <header className={styles.pageTitle}>
             <h1 className={styles.pageTitleHeading}>History</h1>
             <p className={styles.pageTitleSubtitle}>Transactions from previous months</p>
-          </div>
+          </header>
 
-          <div className={styles.spendingOverview}>
+          <section className={styles.spendingOverview} aria-label="Historical spending overview">
             <SpendingChart />
-          </div>
+          </section>
 
           <RecentTransactions
             title="History"
@@ -46,10 +46,10 @@ function History() {
             paginate
             pageSize={10}
           />
-        </div>
+        </main>
       )}
       <AddTransactionModal ref={modalRef} />
-    </div>
+    </>
   );
 }
 

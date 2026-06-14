@@ -25,19 +25,19 @@ function Home() {
   };
 
   return (
-    <div>
+    <>
       <Header onAddTransaction={handleAddTransaction} />
       {isLoading ? (
-        <div className="loading-container">
+        <main className="loading-container">
           <div className="loading-spinner"></div>
           <p className="loading-text">Loading your expenses...</p>
-        </div>
+        </main>
       ) : !hasTransactions ? (
         <EmptyState onAddTransaction={handleAddTransaction} />
       ) : (
-        <div className="container">
+        <main className="container">
           {/* Page Title */}
-          <div className={styles.pageTitle}>
+          <header className={styles.pageTitle}>
             <div className={styles.pageTitleInner}>
               <h1 className={styles.pageTitleHeading}>Financial Overview</h1>
               <p className={styles.pageTitleSubtitle}>
@@ -48,24 +48,24 @@ function Home() {
               <span className={styles.timePeriodLabel}>Time Period</span>
               <span className={styles.timePeriodValue}>This Month</span>
             </div>
-          </div>
+          </header>
 
-          <div className={styles.overviewSection}>
+          <section className={styles.overviewSection} aria-label="Financial overview metrics">
             <div className={styles.overviewRow}>
               <NetWorth />
-              <div className={styles.categoryChart}>
+              <aside className={styles.categoryChart} aria-label="Current month category spending">
                 <BudgetChart />
-              </div>
+              </aside>
             </div>
-          </div>
+          </section>
 
-          <div className={styles.recentTransactionsRow}>
+          <section className={styles.recentTransactionsRow} aria-label="Recent transactions">
             <RecentTransactions scrollAfterItems={8} />
-          </div>
-        </div>
+          </section>
+        </main>
       )}
       <AddTransactionModal ref={modalRef} />
-    </div>
+    </>
   );
 }
 

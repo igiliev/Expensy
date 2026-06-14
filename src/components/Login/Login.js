@@ -38,8 +38,9 @@ function Login({ onSwitchToRegister }) {
     <form onSubmit={handleSubmit}>
       {/* Email Input */}
       <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Email Address</label>
+        <label className={styles.formLabel} htmlFor="login-email">Email Address</label>
         <input
+          id="login-email"
           type="email"
           name="email"
           className={styles.formInput}
@@ -53,9 +54,10 @@ function Login({ onSwitchToRegister }) {
 
       {/* Password Input */}
       <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Password</label>
+        <label className={styles.formLabel} htmlFor="login-password">Password</label>
         <div className={styles.passwordInputGroup}>
           <input
+            id="login-password"
             type={showPassword ? 'text' : 'password'}
             name="password"
             className={`${styles.formInput} ${styles.passwordInput}`}
@@ -102,7 +104,7 @@ function Login({ onSwitchToRegister }) {
       <div className={styles.authFooter}>
         <span className={styles.authFooterText}>
           Don't have an account?
-          <button className={styles.authFooterLink} onClick={onSwitchToRegister}>Sign up</button>
+          <button type="button" className={styles.authFooterLink} onClick={onSwitchToRegister}>Sign up</button>
         </span>
       </div>
     </form>

@@ -93,12 +93,13 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-sm;
-  margin-top: auto;
+  margin: auto 0 0;
   padding: 28px 0 0 0;
   border-top: 1px solid $border-color;
   flex-shrink: 0;
   max-height: 300px;
   overflow-y: auto;
+  list-style: none;
 
   &::-webkit-scrollbar {
     background-color: transparent;
@@ -180,4 +181,3 @@
     gap: $spacing-md;
   }
 }
-

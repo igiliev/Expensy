@@ -1,9 +1,14 @@
 @import '../../styles/variables.scss';
 
 .modalOverlay {
+  border: 0;
   position: fixed;
   inset: 0;
   z-index: $z-modal;
+  width: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;

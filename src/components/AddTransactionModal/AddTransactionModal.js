@@ -126,13 +126,19 @@ const AddTransactionModal = forwardRef((props, ref) => {
   return (
     <>
       {/* Modal Overlay */}
-      <div className={`${styles.modalOverlay} ${isOpen ? styles.active : ''}`} id="addTransactionModal">
-        <div className={styles.modalContent}>
-          <div className={styles.modalHeader}>
-            <h2 className={styles.modalTitle}>Add Transaction</h2>
+      <dialog
+        open={isOpen}
+        className={`${styles.modalOverlay} ${isOpen ? styles.active : ''}`}
+        id="addTransactionModal"
+        aria-modal="true"
+        aria-labelledby="add-transaction-title"
+      >
+        <article className={styles.modalContent}>
+          <header className={styles.modalHeader}>
+            <h2 id="add-transaction-title" className={styles.modalTitle}>Add Transaction</h2>
             <button className={styles.modalClose} onClick={closeModal}><span className={styles.modalCloseIcon}>&times;</span></button>
-          </div>
-          <div className={styles.modalBody}>
+          </header>
+          <section className={styles.modalBody}>
             {/* Transaction Type Selector */}
             <div className={styles.formGroup}>
               <div className={styles.transactionTypeTabs}>
@@ -153,16 +159,18 @@ const AddTransactionModal = forwardRef((props, ref) => {
 
             {/* Amount Input */}
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Amount</label>
+              <label className={styles.formLabel} htmlFor="transaction-amount">Amount</label>
               <div className={styles.amountInputGroup}>
                 <span className={styles.currencySymbol}>€</span>
                 <input
+                  id="transaction-amount"
                   ref={amountInputRef}
                   type="number"
                   className={`${styles.formInput} ${styles.amountInput}`}
                   placeholder="0.00"
                   min="0"
                   step="0.01"
+                  required
                 />
               </div>
             </div>
@@ -188,29 +196,37 @@ const AddTransactionModal = forwardRef((props, ref) => {
 
             {/* Description */}
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Description</label>
-              <input ref={descriptionInputRef} type="text" className={styles.formInput} placeholder="Add a note..." />
+              <label className={styles.formLabel} htmlFor="transaction-description">Description</label>
+              <input
+                id="transaction-description"
+                ref={descriptionInputRef}
+                type="text"
+                className={styles.formInput}
+                placeholder="Add a note..."
+              />
             </div>
 
             {/* Date */}
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Date</label>
+              <label className={styles.formLabel} htmlFor="transaction-date">Date</label>
               <input
+                id="transaction-date"
                 type="date"
                 className={styles.formInput}
                 value={currentDate}
                 onChange={(e) => setCurrentDate(e.target.value)}
+                required
               />
             </div>
 
             {/* Footer Buttons */}
-            <div className={styles.formFooter}>
+            <footer className={styles.formFooter}>
               <button className={`${styles.btnModal} ${styles.btnModalSubmit}`} onClick={submitTransaction}>Add Transaction</button>
               <button className={`${styles.btnModal} ${styles.btnModalCancel}`} onClick={closeModal}>Cancel</button>
-            </div>
-          </div>
-        </div>
-      </div>
+            </footer>
+          </section>
+        </article>
+      </dialog>
     </>
   );
 });

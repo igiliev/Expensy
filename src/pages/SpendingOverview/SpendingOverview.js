@@ -19,24 +19,24 @@ function SpendingOverview() {
   };
 
   return (
-    <div>
+    <>
       <Header onAddTransaction={handleAddTransaction} />
       {isLoading ? (
-        <div className="loading-container">
+        <main className="loading-container">
           <div className="loading-spinner"></div>
           <p className="loading-text">Loading your spending overview...</p>
-        </div>
+        </main>
       ) : (
-        <div className="container">
-          <div className={styles.pageTitle}>
+        <main className="container">
+          <header className={styles.pageTitle}>
             <h1 className={styles.pageTitleHeading}>Spending Overview</h1>
             <p className={styles.pageTitleSubtitle}>Track daily, monthly, and yearly spending trends</p>
-          </div>
+          </header>
           <SpendingChart />
-        </div>
+        </main>
       )}
       <AddTransactionModal ref={modalRef} />
-    </div>
+    </>
   );
 }
 

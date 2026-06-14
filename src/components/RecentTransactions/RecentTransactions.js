@@ -84,22 +84,22 @@ function RecentTransactions({
   };
 
   return (
-    <div className={`section ${styles.transactionsSection}`}>
-      <div className={styles.sectionHeader}>
-        <div className="section-title">{title}</div>
+    <section className={`section ${styles.transactionsSection}`} aria-labelledby="transactions-title">
+      <header className={styles.sectionHeader}>
+        <h2 id="transactions-title" className="section-title">{title}</h2>
         {paginate && transactionsToRender.length > 0 && (
           <div className={styles.pageSummary}>
             Showing {pageStart}-{pageEnd} of {transactionsToRender.length}
           </div>
         )}
-      </div>
-      <div
+      </header>
+      <ul
         className={`${styles.transactionList} ${shouldLimitScroll ? styles.scrollableList : ''}`}
         style={transactionListStyle}
       >
         {transactionsToRender.length > 0 ? (
           visibleTransactions.map(transaction => (
-            <div key={transaction.id} className={styles.transactionItem}>
+            <li key={transaction.id} className={styles.transactionItem}>
               <div className={styles.transactionIcon} style={{background: transaction.iconBg}}>
                 {renderCategoryIcon(transaction.category)}
               </div>
@@ -118,17 +118,17 @@ function RecentTransactions({
               >
                 <span className={styles.transactionDeleteBtnIcon}>×</span>
               </button>
-            </div>
+            </li>
           ))
         ) : (
-          <div className="text-center py-8 text-gray-500">
+          <li className="text-center py-8 text-gray-500">
             <p>{emptyTitle}</p>
             <p className="text-sm mt-2">{emptySubtitle}</p>
-          </div>
+          </li>
         )}
-      </div>
+      </ul>
       {paginate && totalPages > 1 && (
-        <div className={styles.pagination}>
+        <nav className={styles.pagination} aria-label={`${title} pagination`}>
           <button
             className={styles.paginationButton}
             onClick={() => setCurrentPage(page => Math.max(1, page - 1))}
@@ -165,9 +165,9 @@ function RecentTransactions({
           >
             Next
           </button>
-        </div>
+        </nav>
       )}
-    </div>
+    </section>
   );
 }
 
