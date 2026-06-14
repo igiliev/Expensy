@@ -5,7 +5,6 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, 'Email is required'],
-    unique: true,
     lowercase: true,
     validate: {
       validator: function(email) {
@@ -22,6 +21,9 @@ const userSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+// Index for fast login/register lookups and unique email enforcement
+userSchema.index({ email: 1 }, { unique: true });
 
 // Hash password before saving
 userSchema.pre('save', async function(next) {

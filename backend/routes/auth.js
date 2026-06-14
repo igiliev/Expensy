@@ -156,14 +156,22 @@ router.post('/login', [
 // @access  Private (requires authentication)
 router.get('/me', require('../middleware/auth'), async (req, res) => {
   try {
-    // User data is already attached to req.user by the auth middleware
+    const user = await User.findById(req.user._id).select('email createdAt').lean();
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Token is valid but user not found'
+      });
+    }
+
     res.json({
       success: true,
       data: {
         user: {
-          id: req.user._id,
-          email: req.user.email,
-          createdAt: req.user.createdAt
+          id: user._id,
+          email: user.email,
+          createdAt: user.createdAt
         }
       }
     });
@@ -177,4 +185,3 @@ router.get('/me', require('../middleware/auth'), async (req, res) => {
 });
 
 module.exports = router;
-

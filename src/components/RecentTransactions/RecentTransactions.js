@@ -39,6 +39,16 @@ function RecentTransactions({
     return transactionsToRender.slice(startIndex, startIndex + pageSize);
   }, [currentPage, pageSize, paginate, transactionsToRender]);
 
+  const iconBackgroundStyles = useMemo(() => {
+    const styleMap = new Map();
+
+    visibleTransactions.forEach(transaction => {
+      styleMap.set(transaction.id, { background: transaction.iconBg });
+    });
+
+    return styleMap;
+  }, [visibleTransactions]);
+
   const paginationItems = useMemo(() => {
     if (totalPages <= 7) {
       return Array.from({ length: totalPages }, (_, index) => index + 1);
@@ -100,7 +110,7 @@ function RecentTransactions({
         {transactionsToRender.length > 0 ? (
           visibleTransactions.map(transaction => (
             <li key={transaction.id} className={styles.transactionItem}>
-              <div className={styles.transactionIcon} style={{background: transaction.iconBg}}>
+              <div className={styles.transactionIcon} style={iconBackgroundStyles.get(transaction.id)}>
                 {renderCategoryIcon(transaction.category)}
               </div>
               <div className={styles.transactionDetails}>

@@ -26,13 +26,19 @@ const formatExpenseForFrontend = (expense) => {
 };
 
 // @route   GET /api/expenses
-// @desc    Get all expenses for authenticated user
+// @desc    Get paginated expenses for authenticated user
 // @access  Private
 router.get('/', auth, async (req, res) => {
   try {
-    // Get all expenses for the authenticated user, sorted by date (newest first)
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+    const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 100, 1), 100);
+    const skip = (page - 1) * limit;
+
+    // Get paginated expenses for the authenticated user, sorted by date (newest first)
     const expenses = await Expense.find({ user: req.user._id })
       .sort({ date: -1 })
+      .limit(limit)
+      .skip(skip)
       .lean();
 
     // Format expenses for frontend
@@ -40,7 +46,12 @@ router.get('/', auth, async (req, res) => {
 
     res.json({
       success: true,
-      data: formattedExpenses
+      data: formattedExpenses,
+      pagination: {
+        page,
+        limit,
+        count: formattedExpenses.length
+      }
     });
 
   } catch (error) {

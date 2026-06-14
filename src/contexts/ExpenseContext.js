@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from './AuthContext';
 
 const ExpenseContext = createContext();
@@ -22,13 +22,39 @@ const defaultCategories = [
   { id: 'slava', name: 'Slava', amount: 0, progress: 0 }
 ];
 
+const categoryMapping = {
+  'Bills': 'bills',
+  'Baby': 'baby',
+  'House': 'house',
+  'Entertainment': 'entertainment',
+  'Food': 'food',
+  'Transport': 'transport',
+  'Slava': 'slava',
+  'Utilities': 'bills',
+  'Food & Dining': 'food',
+  'Transportation': 'transport'
+};
+
 const getTransactionDate = (transaction) => new Date(transaction.dateISO || transaction.date);
 
 const getDateInputValue = (date) => date.toISOString().split('T')[0];
 
-const getCurrentMonthStart = () => {
-  const today = new Date();
-  return new Date(today.getFullYear(), today.getMonth(), 1);
+const getTransactionTimestamp = (transactionData) => {
+  if (transactionData.dateISO) {
+    return transactionData.dateISO;
+  }
+
+  if (transactionData.rawDate) {
+    const todayInputValue = getDateInputValue(new Date());
+
+    return transactionData.rawDate === todayInputValue
+      ? new Date().toISOString()
+      : new Date(transactionData.rawDate).toISOString();
+  }
+
+  return transactionData.date === 'Today' || transactionData.date === 'Yesterday'
+    ? new Date().toISOString()
+    : new Date(transactionData.date).toISOString();
 };
 
 export const ExpenseProvider = ({ children }) => {
@@ -82,43 +108,55 @@ export const ExpenseProvider = ({ children }) => {
     }
   }, [isAuthenticated, fetchExpenses, getActiveMonthStorageKey]);
 
-  const currentMonthStart = getCurrentMonthStart();
+  const today = new Date();
+  const currentMonthKey = `${today.getFullYear()}-${today.getMonth()}`;
+  const currentMonthStart = useMemo(() => {
+    const [year, month] = currentMonthKey.split('-').map(Number);
+    return new Date(year, month, 1);
+  }, [currentMonthKey]);
 
-  const currentMonthTransactions = expenseData.transactions.filter(transaction => {
-    const transactionDate = getTransactionDate(transaction);
+  const transactionGroups = useMemo(() => {
+    const groups = {
+      currentMonthTransactions: [],
+      historyTransactions: [],
+      activeTransactions: []
+    };
+    const resetDate = activeMonthStart ? new Date(activeMonthStart) : null;
+    const hasValidResetDate = resetDate && !Number.isNaN(resetDate.getTime());
 
-    if (Number.isNaN(transactionDate.getTime())) {
-      return true;
-    }
+    expenseData.transactions.forEach(transaction => {
+      const transactionDate = getTransactionDate(transaction);
+      const hasValidTransactionDate = !Number.isNaN(transactionDate.getTime());
 
-    return transactionDate >= currentMonthStart;
-  });
+      if (!hasValidTransactionDate) {
+        groups.currentMonthTransactions.push(transaction);
+        groups.activeTransactions.push(transaction);
+        return;
+      }
 
-  const historyTransactions = expenseData.transactions.filter(transaction => {
-    const transactionDate = getTransactionDate(transaction);
+      if (transactionDate < currentMonthStart) {
+        groups.historyTransactions.push(transaction);
+        return;
+      }
 
-    if (Number.isNaN(transactionDate.getTime())) {
-      return false;
-    }
+      groups.currentMonthTransactions.push(transaction);
 
-    return transactionDate < currentMonthStart;
-  });
+      if (!activeMonthStart || !hasValidResetDate || transactionDate >= resetDate) {
+        groups.activeTransactions.push(transaction);
+      }
+    });
 
-  const activeTransactions = activeMonthStart
-    ? currentMonthTransactions.filter(transaction => {
-        const transactionDate = getTransactionDate(transaction);
-        const resetDate = new Date(activeMonthStart);
+    return groups;
+  }, [activeMonthStart, expenseData.transactions, currentMonthStart]);
 
-        if (Number.isNaN(transactionDate.getTime()) || Number.isNaN(resetDate.getTime())) {
-          return true;
-        }
-
-        return transactionDate >= resetDate;
-      })
-    : currentMonthTransactions;
+  const {
+    currentMonthTransactions,
+    historyTransactions,
+    activeTransactions
+  } = transactionGroups;
 
   // Calculate monthly spending from transactions
-  const calculateMonthlySpending = () => {
+  const monthlySpending = useMemo(() => {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const currentYear = new Date().getFullYear();
 
@@ -133,10 +171,10 @@ export const ExpenseProvider = ({ children }) => {
       const monthTotal = monthTransactions.reduce((sum, t) => sum + Math.abs(t.amount), 0);
       return { month, amount: monthTotal };
     });
-  };
+  }, [activeTransactions]);
 
   // Calculate daily spending for the last 7 days
-  const calculateDailySpending = () => {
+  const dailySpending = useMemo(() => {
     const days = [];
     const today = new Date();
 
@@ -158,10 +196,10 @@ export const ExpenseProvider = ({ children }) => {
 
       return { day: dayLabel, amount: dayTotal };
     });
-  };
+  }, [activeTransactions]);
 
   // Calculate yearly spending for the last 5 years
-  const calculateYearlySpending = () => {
+  const yearlySpending = useMemo(() => {
     const currentYear = new Date().getFullYear();
     const years = [];
 
@@ -179,10 +217,10 @@ export const ExpenseProvider = ({ children }) => {
       const yearTotal = yearTransactions.reduce((sum, t) => sum + Math.abs(t.amount), 0);
       return { year: year.toString(), amount: yearTotal };
     });
-  };
+  }, [activeTransactions]);
 
   // Calculate categories from transactions
-  const calculateCategories = () => {
+  const categories = useMemo(() => {
     const categoryTotals = {};
 
     // Initialize all categories with 0
@@ -194,20 +232,6 @@ export const ExpenseProvider = ({ children }) => {
     activeTransactions
       .filter(t => t.type === 'expense')
       .forEach(transaction => {
-        // Map transaction categories to our category IDs
-        const categoryMapping = {
-          'Bills': 'bills',
-          'Baby': 'baby',
-          'House': 'house',
-          'Entertainment': 'entertainment',
-          'Food': 'food',
-          'Transport': 'transport',
-          'Slava': 'slava',
-          'Utilities': 'bills',
-          'Food & Dining': 'food',
-          'Transportation': 'transport'
-        };
-
         const categoryId = categoryMapping[transaction.category] || 'bills';
         if (categoryTotals[categoryId] !== undefined) {
           categoryTotals[categoryId] += Math.abs(transaction.amount);
@@ -220,10 +244,10 @@ export const ExpenseProvider = ({ children }) => {
       amount: categoryTotals[cat.id] || 0,
       progress: Math.min((categoryTotals[cat.id] || 0) / 1000 * 100, 100)
     }));
-  };
+  }, [activeTransactions]);
 
   // Calculate summary values
-  const calculateSummary = () => {
+  const summary = useMemo(() => {
     const totalIncome = activeTransactions
       .filter(t => t.type === 'income')
       .reduce((sum, t) => sum + Math.abs(t.amount), 0);
@@ -235,10 +259,10 @@ export const ExpenseProvider = ({ children }) => {
     const netBalance = totalIncome - totalExpenses;
 
     return { totalIncome, totalExpenses, netBalance };
-  };
+  }, [activeTransactions]);
 
   // Add a new transaction (now saves to API)
-  const addTransaction = async (transactionData) => {
+  const addTransaction = useCallback(async (transactionData) => {
     try {
       setError(null);
 
@@ -269,28 +293,10 @@ export const ExpenseProvider = ({ children }) => {
       setError('Failed to add transaction');
       return { success: false, error: error.message };
     }
-  };
-
-  function getTransactionTimestamp(transactionData) {
-    if (transactionData.dateISO) {
-      return transactionData.dateISO;
-    }
-
-    if (transactionData.rawDate) {
-      const todayInputValue = getDateInputValue(new Date());
-
-      return transactionData.rawDate === todayInputValue
-        ? new Date().toISOString()
-        : new Date(transactionData.rawDate).toISOString();
-    }
-
-    return transactionData.date === 'Today' || transactionData.date === 'Yesterday'
-      ? new Date().toISOString()
-      : new Date(transactionData.date).toISOString();
-  }
+  }, [apiRequest]);
 
   // Delete a transaction by ID
-  const deleteTransaction = async (transactionId) => {
+  const deleteTransaction = useCallback(async (transactionId) => {
     try {
       setError(null);
 
@@ -311,35 +317,51 @@ export const ExpenseProvider = ({ children }) => {
       setError('Failed to delete transaction');
       return { success: false, error: error.message };
     }
-  };
+  }, [apiRequest]);
 
-  const resetCurrentMonth = () => {
+  const resetCurrentMonth = useCallback(() => {
     const nextActiveMonthStart = new Date().toISOString();
 
     localStorage.setItem(getActiveMonthStorageKey(), nextActiveMonthStart);
     setActiveMonthStart(nextActiveMonthStart);
-  };
+  }, [getActiveMonthStorageKey]);
 
-  const value = {
+  const value = useMemo(() => ({
     expenseData: {
       ...expenseData,
       allTransactions: expenseData.transactions,
       transactions: activeTransactions,
       currentMonthTransactions,
       historyTransactions,
-      monthlySpending: calculateMonthlySpending(),
-      dailySpending: calculateDailySpending(),
-      yearlySpending: calculateYearlySpending(),
-      categories: calculateCategories()
+      monthlySpending,
+      dailySpending,
+      yearlySpending,
+      categories
     },
-    summary: calculateSummary(),
+    summary,
     loading,
     error,
     resetCurrentMonth,
     addTransaction,
     deleteTransaction,
     fetchExpenses
-  };
+  }), [
+    expenseData,
+    activeTransactions,
+    currentMonthTransactions,
+    historyTransactions,
+    monthlySpending,
+    dailySpending,
+    yearlySpending,
+    categories,
+    summary,
+    loading,
+    error,
+    resetCurrentMonth,
+    addTransaction,
+    deleteTransaction,
+    fetchExpenses
+  ]);
 
   return (
     <ExpenseContext.Provider value={value}>
