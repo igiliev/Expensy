@@ -38,8 +38,16 @@ function Home() {
         <div className="container">
           {/* Page Title */}
           <div className={styles.pageTitle}>
-            <h1 className={styles.pageTitleHeading}>My Spending</h1>
-            <p className={styles.pageTitleSubtitle}>Track and manage my expenses efficiently</p>
+            <div className={styles.pageTitleInner}>
+              <h1 className={styles.pageTitleHeading}>Financial Overview</h1>
+              <p className={styles.pageTitleSubtitle}>
+                Your performance is up 12.4% this month. Manage your transactions and track wealth growth effortlessly.
+              </p>
+            </div>
+            <div className={styles.timePeriodCard} aria-label="Current time period">
+              <span className={styles.timePeriodLabel}>Time Period</span>
+              <span className={styles.timePeriodValue}>This Month</span>
+            </div>
           </div>
 
           <div className={styles.overviewSection}>

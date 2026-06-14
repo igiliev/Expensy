@@ -1,18 +1,58 @@
 @import '../../styles/variables.scss';
 
 .pageTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-xl;
   margin-bottom: $spacing-lg;
+}
+
+.pageTitleInner {
+  min-width: 0;
+  max-width: 820px;
+  text-align: left;
 }
 
 .pageTitleHeading {
   font-size: $font-5xl;
   font-weight: 700;
+  line-height: 1.1;
 }
 
 .pageTitleSubtitle {
   color: $text-secondary;
   margin-top: $spacing-sm;
   font-size: $font-xl;
+  line-height: 1.45;
+}
+
+.timePeriodCard {
+  flex: 0 0 auto;
+  min-width: 196px;
+  border: 1px solid $border-color-light;
+  border-radius: $radius-lg;
+  background: $background-card;
+  padding: $spacing-lg $spacing-xl;
+}
+
+.timePeriodLabel {
+  display: block;
+  color: $text-secondary;
+  font-size: $font-sm;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.timePeriodValue {
+  display: block;
+  margin-top: $spacing-md;
+  color: $text-primary;
+  font-size: $font-lg;
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 .overviewSection {
@@ -41,8 +81,26 @@
 }
 
 @media (max-width: 1024px) {
+  .pageTitle {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .overviewRow {
     grid-template-columns: 1fr;
   }
 }
 
+@media (max-width: 640px) {
+  .pageTitleHeading {
+    font-size: $font-4xl;
+  }
+
+  .pageTitleSubtitle {
+    font-size: $font-base;
+  }
+
+  .timePeriodCard {
+    width: 100%;
+  }
+}
