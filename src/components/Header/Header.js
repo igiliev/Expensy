@@ -8,15 +8,14 @@ import styles from './Header.module.scss';
 
 function Header({ onAddTransaction }) {
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, logout } = useAuth();
   const { resetCurrentMonth } = useExpense();
 
   const handleLogout = () => {
     setIsMobileMenuOpen(false);
-    if (window.confirm('Are you sure you want to log out?')) {
-      logout();
-    }
+    setIsLogoutModalOpen(true);
   };
 
   const handleResetMonth = () => {
@@ -32,6 +31,11 @@ function Header({ onAddTransaction }) {
   const confirmResetMonth = () => {
     resetCurrentMonth();
     setIsResetModalOpen(false);
+  };
+
+  const confirmLogout = () => {
+    logout();
+    setIsLogoutModalOpen(false);
   };
 
   return (
@@ -139,6 +143,15 @@ function Header({ onAddTransaction }) {
         cancelLabel="Keep current data"
         onConfirm={confirmResetMonth}
         onCancel={() => setIsResetModalOpen(false)}
+      />
+      <ConfirmationModal
+        isOpen={isLogoutModalOpen}
+        title="Log out?"
+        message="You will need to sign in again to access your dashboard and transactions."
+        confirmLabel="Log out"
+        cancelLabel="Stay signed in"
+        onConfirm={confirmLogout}
+        onCancel={() => setIsLogoutModalOpen(false)}
       />
     </>
   );
