@@ -51,6 +51,10 @@
   line-height: 1.4;
   text-transform: uppercase;
   text-align: left;
+
+    @media (max-width: 768px) {
+      text-align: center;
+    }
 }
 
 .metricValue {
@@ -133,6 +137,10 @@
   align-items: center;
   gap: $spacing-lg;
   min-width: 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 }
 
 .netWorthIcon {
@@ -194,7 +202,7 @@
 
   .netWorthStrip {
     grid-column: auto;
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
   }
 
